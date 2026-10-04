@@ -163,4 +163,3 @@
 | 2026-10-04 | 成田にも行かない → 撮影を必須から外す。撮影ゼロ（図解・速報・日本語での確認代行）を主軸にする | no-travel-options.md 第6章 |
 | 2026-10-04 | 撮影なしパターンで実行開始。法律・情報漏洩以外はClaudeが自分で判断する運用に変更（Keitaの指示）。事実台帳・到着キット・無料特典・リール5本・Etsy出品文を作成 | launch-checklist.md |
 | 2026-10-04 | ブランド名は「First72 Japan」を推奨（Keitaの最終確認待ち）。K3（副業規定）はKeitaが会社員ではないため解決済み。Etsyの開設は本人確認と支払いだけをKeitaが担当し、それ以外の文章と画像はClaudeが用意する | brand-naming.md, launch-checklist.md |
-| 2026-10-04 | Gmail・Instagram開設完了（Keita）。R1は台本のJSONから動画を自動で作る方式で制作（Keitaは投稿するだけ）。投稿時間は日本時間の朝8〜9時（米国東部の夜）を仮説として設定 | profile-kit.md, tools/render_reel.py |
