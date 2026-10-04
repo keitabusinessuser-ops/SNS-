@@ -8,7 +8,7 @@
 ## 1. プロフィール
 | 項目 | 入れる内容 |
 |---|---|
-| プロフィール写真 | `ready-to-post/01_profile/profile-icon.png` |
+| プロフィール写真 | `content/instagram/profile-icon.png` |
 | 名前（検索に引っかかる欄・30文字以内） | `First72 Japan \| Tokyo Arrival` |
 | ユーザーネーム | `first72japan`（取れなかった場合は、取れた名前をClaudeに伝える） |
 | 自己紹介（150文字以内） | 下の4行をそのまま貼る |
@@ -32,8 +32,8 @@ New tips every week
 | 5 | 個人のFacebookやInstagramとアカウントセンターでつながないようにする | 個人のアカウントとの結び付けを防ぐ |
 
 ## 3. 1本目の投稿（R1：免税制度の変更）
-- 動画：`ready-to-post/02_reels/R1_2026-10-05_tax-free/video.mp4`（21秒、縦型）
-- カバー画像：`ready-to-post/02_reels/R1_2026-10-05_tax-free/cover.png`
+- 動画：`content/reels/output/r1-tax-free.mp4`（21秒、縦型）
+- カバー画像：`content/reels/output/r1-tax-free-cover.png`
 - 投稿する時間：**日本時間の朝8〜9時**（米国東部の夜7〜8時。英語圏の人が見る時間帯に合わせる。仮説なので数字を見て調整する）
 
 ### 投稿の手順

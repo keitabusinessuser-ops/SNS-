@@ -165,3 +165,4 @@
 | 2026-10-04 | ブランド名は「First72 Japan」を推奨（Keitaの最終確認待ち）。K3（副業規定）はKeitaが会社員ではないため解決済み。Etsyの開設は本人確認と支払いだけをKeitaが担当し、それ以外の文章と画像はClaudeが用意する | brand-naming.md, launch-checklist.md |
 | 2026-10-04 | Gmail・Instagram開設完了（Keita）。R1は台本のJSONから動画を自動で作る方式で制作（Keitaは投稿するだけ）。投稿時間は日本時間の朝8〜9時（米国東部の夜）を仮説として設定 | profile-kit.md, tools/render_reel.py |
 | 2026-10-04 | 投稿は段階1（Claudeがまとめて制作し、Keitaがアプリで予約投稿）で運用する。API連携による完全自動化（段階2）はトークンを預けるため情報漏洩リスクに当たり、T2の結果を見てからKeitaの承認で判断する。非公式ツールは使わない | posting-automation.md |
+| 2026-10-04 | 投稿に使う素材（画像・動画・キャプション）を `ready-to-post/` にまとめる。フォルダ名は「番号_投稿日_テーマ」。台本のJSONからの書き出し先もこのフォルダに変更 | ready-to-post/README.md |

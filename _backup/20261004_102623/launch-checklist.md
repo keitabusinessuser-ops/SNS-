@@ -63,7 +63,7 @@
 | 成果物 | 場所 |
 |---|---|
 | Instagram初期設定キット（プロフィール・情報漏洩対策の設定・投稿手順・キャプション） | `content/instagram/profile-kit.md` |
-| プロフィール画像 | `ready-to-post/01_profile/profile-icon.png` |
-| R1 リール動画（21秒）とカバー画像 | `ready-to-post/02_reels/` |
+| プロフィール画像 | `content/instagram/profile-icon.png` |
+| R1 リール動画（21秒）とカバー画像 | `content/reels/output/` |
 | リール動画を作るスクリプト（台本のJSONから動画を作る） | `tools/render_reel.py`、`content/reels/specs/` |
 | Etsyショップ設定文 | `content/etsy/shop-profile.md` |

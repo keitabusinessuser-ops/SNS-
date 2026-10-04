@@ -4,8 +4,8 @@ Usage: python3 tools/render_reel.py content/reels/specs/r1-tax-free.json
 
 Spec format:
 {
-  "output": "content/reels/output/r1-tax-free.mp4",
-  "cover": "content/reels/output/r1-tax-free-cover.png",
+  "output": "ready-to-post/02_reels/R1_2026-10-05_tax-free/video.mp4",
+  "cover": "ready-to-post/02_reels/R1_2026-10-05_tax-free/cover.png",
   "footer": "Source: ... | Last verified 2026-10-04",
   "slides": [
     {"seconds": 3, "blocks": [{"text": "...", "size": 96, "color": "white", "bold": true}]}
