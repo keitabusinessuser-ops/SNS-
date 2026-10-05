@@ -12,7 +12,7 @@
 ### The calm, no-guesswork arrival kit — from the airport to your first three days
 
 *Made by a resident of the Tokyo area. Prices and rules were checked against official sources where possible — anything marked approx. should be double-checked before you travel.*
-**Last verified: 2026-10-05**
+**Last verified: 2026-10-04**
 
 ---
 
@@ -46,9 +46,9 @@ Narita is about an hour from central Tokyo. Choose by **where your hotel is** an
 | Option | To | Time | Price (adult) | Best for |
 |---|---|---|---|---|
 | **Skyliner** (Keisei) | Ueno / Nippori | 41 min to Ueno | ¥2,470 (IC: ¥2,465) [F01] | Hotels in Ueno, Asakusa, Akihabara. Fastest |
-| **Access Express** (Keisei) | Ueno, Asakusa line | Slower than the Skyliner | ¥1,240 (IC: ¥1,235) [F03] | Saving money, light luggage |
+| **Access Express** (Keisei) | Ueno, Asakusa line | approx. 63–69 min | approx. ¥1,280 [F03] | Saving money, light luggage |
 | **N'EX** (JR) round trip | Tokyo, Shinjuku, Shibuya and more | — | ¥5,200 round trip, valid 14 days, foreign passport only [F04] | Hotels on the JR lines (Shinjuku, Shibuya, Tokyo) |
-| **Airport bus** | Tokyo Station, Ginza | From 65 min to Tokyo Station | ¥1,500 daytime / ¥3,000 late night [F05] | Heavy luggage, no transfers |
+| **Airport bus** | Tokyo Station, Ginza | — | approx. ¥1,500 daytime / ¥3,000 late night [F05] | Heavy luggage, no transfers |
 
 **Simple rule:**
 - Hotel in the **east** (Ueno, Asakusa) → Skyliner
@@ -63,7 +63,7 @@ Haneda is close to the city — most travelers reach a central station in under 
 
 | Option | To | Time | Price (IC card, adult) |
 |---|---|---|---|
-| **Keikyu Line** | Shinagawa | 11–14 min | approx. ¥330 [F06] |
+| **Keikyu Line** | Shinagawa | approx. 11–14 min | approx. ¥327 [F06] |
 | **Tokyo Monorail** | Hamamatsucho | approx. 13 min | approx. ¥519 [F06] |
 
 **Simple rule:** Keikyu if your hotel is south or west (Shinagawa, Shibuya). Monorail if you're heading toward Tokyo Station, Ginza or Hamamatsucho.

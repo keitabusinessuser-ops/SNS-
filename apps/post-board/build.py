@@ -21,6 +21,11 @@ LABELS = {
     "haneda": "羽田から都内への行き方",
     "suica": "Suica：アプリかカードか",
     "subway-ticket": "地下鉄パスは得か",
+    "visit-japan-web": "Visit Japan Web（入国のQRコード）",
+    "emergency-numbers": "保存しておく緊急連絡先3つ",
+    "narita-bus": "成田から空港バスで都内へ",
+    "tax-free-reminder": "免税：荷物を預ける前に手続き",
+    "welcome-suica": "Welcome Suicaの残高は180日",
 }
 
 

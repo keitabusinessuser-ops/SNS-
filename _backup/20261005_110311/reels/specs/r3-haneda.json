@@ -1,7 +1,7 @@
 {
   "output": "ready-to-post/02_reels/R3_10-07_haneda_video.mp4",
   "cover": "ready-to-post/02_reels/R3_10-07_haneda_cover.png",
-  "footer": "Fares with an IC card, from published guides. approx. = check the official site. Last verified 2026-10-05",
+  "footer": "Fares with an IC card, from published guides. approx. = check the official site. Last verified 2026-10-04",
   "slides": [
     {"seconds": 3, "blocks": [
       {"text": "Landing at Haneda?", "size": 64, "color": "muted"},
@@ -9,7 +9,7 @@
     ]},
     {"seconds": 5, "blocks": [
       {"text": "Keikyu Line", "size": 60, "color": "yellow", "bold": true},
-      {"text": "to Shinagawa: 11-14 min, approx. 330 yen", "size": 64, "box": "panel"},
+      {"text": "to Shinagawa: approx. 11-14 min, approx. 327 yen", "size": 64, "box": "panel"},
       {"text": "Tokyo Monorail", "size": 60, "color": "yellow", "bold": true},
       {"text": "to Hamamatsucho: approx. 13 min, approx. 519 yen", "size": 64, "box": "panel"}
     ]},

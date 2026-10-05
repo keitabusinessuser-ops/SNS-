@@ -1,0 +1,23 @@
+{
+  "output": "ready-to-post/02_reels/R8_10-12_narita-bus_video.mp4",
+  "cover": "ready-to-post/02_reels/R8_10-12_narita-bus_cover.png",
+  "footer": "Source: Airport Bus TYO-NRT (official). Adult fares. Last verified 2026-10-05",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Narita with big suitcases?", "size": 64, "color": "muted"},
+      {"text": "The bus can be easier", "size": 110, "bold": true}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "Airport Bus TYO-NRT", "size": 64, "color": "yellow", "bold": true},
+      {"text": "To Tokyo Station from 65 min", "size": 66, "box": "panel"},
+      {"text": "1,500 yen (daytime)", "size": 66, "box": "panel", "bold": true},
+      {"text": "Pay with cash or an IC card", "size": 66, "box": "panel"}
+    ]},
+    {"seconds": 4, "blocks": [
+      {"text": "Late night / early morning: 3,000 yen", "size": 80, "box": "red", "bold": true}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Send this to your travel buddy", "size": 88, "bold": true}
+    ]}
+  ]
+}

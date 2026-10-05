@@ -33,7 +33,7 @@
 1. 自作の簡略図：成田 → 東側（上野・浅草）／西側（新宿・渋谷）
 2. 比較表（1行ずつ表示）
    - Skyliner → Ueno, 41 min, ¥2,470 [F01]
-   - Access Express → Ueno, slower, ¥1,240 [F03]
+   - Access Express → Ueno, approx. 65 min, approx. ¥1,280 [F03]
    - N'EX round trip → Shinjuku/Shibuya, ¥5,200 return, foreign passport only [F04]
    - Bus → Tokyo Station/Ginza, approx. ¥1,500 [F05]
 3. 結論の文字：「East hotel → Skyliner / West hotel → N'EX / Heavy bags → Bus」
@@ -45,7 +45,7 @@
 **フック**：「Landing at Haneda? You're 15 minutes from the city.」
 **画面の流れ**
 1. 簡略図：羽田 → 品川（京急）／浜松町（モノレール）
-2. Keikyu → Shinagawa, 11–14 min, approx. ¥330 (IC) [F06]
+2. Keikyu → Shinagawa, approx. 11–14 min, approx. ¥327 (IC) [F06]
 3. Monorail → Hamamatsucho, approx. 13 min, approx. ¥519 (IC) [F06]
 4. 結論：「Going south/west → Keikyu. Going to Tokyo Station/Ginza → Monorail.」
 **ナレーション**：「Haneda is close. Keikyu gets you to Shinagawa in about twelve minutes, the Monorail to Hamamatsucho in about thirteen. Pick by where you're heading. Save this.」

@@ -1,0 +1,23 @@
+{
+  "output": "ready-to-post/02_reels/R9_10-13_tax-free-reminder_video.mp4",
+  "cover": "ready-to-post/02_reels/R9_10-13_tax-free-reminder_cover.png",
+  "footer": "Source: National Tax Agency of Japan. General info only - check official sites before you travel. Last verified 2026-10-05",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Japan trip in November?", "size": 64, "color": "muted"},
+      {"text": "An easy tax-free mistake", "size": 116, "bold": true}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "Checking in your bag BEFORE the tax-free kiosk", "size": 80, "box": "red", "bold": true},
+      {"text": "From Nov 1, 2026, customs has to see the goods", "size": 60, "color": "muted"}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "Do it in this order", "size": 60, "color": "muted", "bold": true},
+      {"text": "1. Tax-free kiosk + customs check", "size": 66, "box": "yellow", "bold": true},
+      {"text": "2. Then check in your bags", "size": 66, "box": "panel"}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Save this so you get your refund", "size": 84, "bold": true}
+    ]}
+  ]
+}

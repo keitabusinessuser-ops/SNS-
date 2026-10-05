@@ -1,7 +1,7 @@
 {
   "output": "ready-to-post/02_reels/R2_10-06_narita_video.mp4",
   "cover": "ready-to-post/02_reels/R2_10-06_narita_cover.png",
-  "footer": "Sources: Keisei, JR East and published fare guides. approx. = check the official site. Last verified 2026-10-05",
+  "footer": "Sources: Keisei, JR East and published fare guides. approx. = check the official site. Last verified 2026-10-04",
   "slides": [
     {"seconds": 3, "blocks": [
       {"text": "Landing at Narita?", "size": 64, "color": "muted"},
@@ -9,9 +9,9 @@
     ]},
     {"seconds": 6, "blocks": [
       {"text": "Skyliner: Ueno, 41 min, 2,470 yen", "size": 62, "box": "panel", "bold": true},
-      {"text": "Access Express: Ueno, slower, 1,240 yen", "size": 58, "box": "panel"},
+      {"text": "Access Express: Ueno, approx. 65 min, approx. 1,280 yen", "size": 58, "box": "panel"},
       {"text": "N'EX round trip: 5,200 yen, 14 days, foreign passport only", "size": 58, "box": "panel"},
-      {"text": "Bus: Tokyo Stn / Ginza, 1,500 yen", "size": 58, "box": "panel"}
+      {"text": "Bus: Tokyo Stn / Ginza, approx. 1,500 yen", "size": 58, "box": "panel"}
     ]},
     {"seconds": 5, "blocks": [
       {"text": "Pick by hotel area", "size": 64, "color": "muted", "bold": true},

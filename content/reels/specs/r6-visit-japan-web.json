@@ -1,0 +1,23 @@
+{
+  "output": "ready-to-post/02_reels/R6_10-10_visit-japan-web_video.mp4",
+  "cover": "ready-to-post/02_reels/R6_10-10_visit-japan-web_cover.png",
+  "footer": "Source: Digital Agency of Japan (Visit Japan Web). General info only - check official sites before you travel. Last verified 2026-10-05",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Flying to Japan?", "size": 64, "color": "muted"},
+      {"text": "Skip the paper forms at the airport", "size": 100, "bold": true}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "Visit Japan Web", "size": 80, "color": "yellow", "bold": true},
+      {"text": "Free, run by Japan's Digital Agency", "size": 64, "box": "panel"},
+      {"text": "ONE QR code for immigration + customs", "size": 64, "box": "panel", "bold": true}
+    ]},
+    {"seconds": 4, "blocks": [
+      {"text": "Register before your flight. It's optional, but much faster.", "size": 72, "box": "yellow", "bold": true}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Save this for your trip", "size": 88, "bold": true},
+      {"text": "Follow for your first 72 hours in Tokyo", "size": 56, "color": "yellow"}
+    ]}
+  ]
+}

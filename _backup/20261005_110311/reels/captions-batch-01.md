@@ -8,9 +8,9 @@ R1のキャプションは `content/instagram/profile-kit.md` にある。
 Landing at Narita? Pick your train by hotel area 🚆
 
 • Skyliner → Ueno in 41 min, ¥2,470
-• Access Express → Ueno, slower but cheaper, ¥1,240
+• Access Express → Ueno, approx. 65 min, approx. ¥1,280
 • N'EX round trip → ¥5,200, valid 14 days, foreign passport only (best if you also fly out of Narita)
-• Bus → Tokyo Station / Ginza, ¥1,500
+• Bus → Tokyo Station / Ginza, approx. ¥1,500
 
 East hotel = Skyliner. West hotel = N'EX. Big suitcases = bus.
 
@@ -24,7 +24,7 @@ Prices: Keisei, JR East and published fare guides. "approx." = check the officia
 ```
 Landing at Haneda? You're about 15 minutes from the city 🏙️
 
-• Keikyu Line → Shinagawa, 11–14 min, approx. ¥330 (IC card)
+• Keikyu Line → Shinagawa, approx. 11–14 min, approx. ¥327 (IC card)
 • Tokyo Monorail → Hamamatsucho, approx. 13 min, approx. ¥519 (IC card)
 
 Heading south or west? Keikyu. Tokyo Station or Ginza? Monorail.
