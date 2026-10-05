@@ -1,0 +1,22 @@
+{
+  "output": "ready-to-post/02_reels/R10_10-14_welcome-suica_video.mp4",
+  "cover": "ready-to-post/02_reels/R10_10-14_welcome-suica_cover.png",
+  "footer": "Source: JR East (Welcome Suica Mobile). General info only - check official sites before you travel. Last verified 2026-10-05",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Using Welcome Suica Mobile?", "size": 64, "color": "muted"},
+      {"text": "Don't top up too much", "size": 116, "bold": true}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "Your balance is valid for 180 days from your first top-up", "size": 72, "box": "panel", "bold": true},
+      {"text": "After that, the balance expires", "size": 64, "box": "red", "bold": true}
+    ]},
+    {"seconds": 4, "blocks": [
+      {"text": "Top up a little at a time with Apple Pay", "size": 76, "box": "yellow", "bold": true}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Save this for your trip", "size": 88, "bold": true},
+      {"text": "Follow for your first 72 hours in Tokyo", "size": 56, "color": "yellow"}
+    ]}
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "output": "ready-to-post/02_reels/R2_10-06_narita_video.mp4",
+  "cover": "ready-to-post/02_reels/R2_10-06_narita_cover.png",
+  "footer": "Sources: Keisei, JR East and published fare guides. approx. = check the official site. Last verified 2026-10-05",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Landing at Narita?", "size": 64, "color": "muted"},
+      {"text": "Don't pick the wrong train into Tokyo", "size": 100, "bold": true}
+    ]},
+    {"seconds": 6, "blocks": [
+      {"text": "Skyliner: Ueno, 41 min, 2,470 yen", "size": 62, "box": "panel", "bold": true},
+      {"text": "Access Express: Ueno, slower, 1,240 yen", "size": 58, "box": "panel"},
+      {"text": "N'EX round trip: 5,200 yen, 14 days, foreign passport only", "size": 58, "box": "panel"},
+      {"text": "Bus: Tokyo Stn / Ginza, 1,500 yen", "size": 58, "box": "panel"}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "Pick by hotel area", "size": 64, "color": "muted", "bold": true},
+      {"text": "East (Ueno, Asakusa) = Skyliner", "size": 70, "box": "yellow", "bold": true},
+      {"text": "West (Shinjuku, Shibuya) = N'EX", "size": 70, "box": "yellow", "bold": true},
+      {"text": "Big suitcases = Bus", "size": 70, "box": "yellow", "bold": true}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Send this to your travel buddy", "size": 88, "bold": true}
+    ]}
+  ]
+}

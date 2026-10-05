@@ -1,0 +1,36 @@
+{
+  "output": "ready-to-post/02_reels/R1_2026-10-05_tax-free/video.mp4",
+  "cover": "ready-to-post/02_reels/R1_2026-10-05_tax-free/cover.png",
+  "footer": "Source: National Tax Agency of Japan. General info only - check official sites before you travel. Last verified 2026-10-04",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Shopping in Japan?", "size": 64, "color": "muted"},
+      {"text": "Tax-free shopping CHANGES on Nov 1, 2026", "size": 104, "bold": true},
+      {"text": "Don't lose your refund", "size": 60, "box": "yellow", "bold": true}
+    ]},
+    {"seconds": 4, "blocks": [
+      {"text": "BEFORE", "size": 56, "color": "muted", "bold": true},
+      {"text": "Tax removed at the store", "size": 72, "box": "panel"},
+      {"text": "AFTER Nov 1, 2026", "size": 56, "color": "yellow", "bold": true},
+      {"text": "Pay full price, then get the tax back at the airport", "size": 72, "box": "panel", "bold": true}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "How it works", "size": 64, "color": "muted", "bold": true},
+      {"text": "1. Pay the full price, tax included", "size": 66, "box": "panel"},
+      {"text": "2. Keep the goods + your passport", "size": 66, "box": "panel"},
+      {"text": "3. Airport tax-free kiosk BEFORE bag check-in", "size": 66, "box": "yellow", "bold": true}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Do it within", "size": 64, "color": "muted"},
+      {"text": "90 DAYS", "size": 180, "bold": true, "color": "yellow"},
+      {"text": "of your purchase", "size": 64, "color": "muted"}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "No customs check = NO refund", "size": 96, "box": "red", "bold": true}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Save this for your trip", "size": 88, "bold": true},
+      {"text": "Send it to your travel buddy", "size": 64, "color": "yellow"}
+    ]}
+  ]
+}
