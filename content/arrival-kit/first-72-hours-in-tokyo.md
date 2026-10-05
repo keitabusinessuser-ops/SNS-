@@ -17,7 +17,7 @@
 ---
 
 ## How to use this kit
-1. **7 days before you fly** → do the "Before You Fly" checklist (page 2). It takes about 30 minutes.
+1. **7 days before you fly** → do the "Before You Fly" checklist (Section 1). It takes about 30 minutes.
 2. **On the plane** → read "Landing" for your airport (Narita or Haneda) and pick your route.
 3. **Days 1–3** → pick the route that matches your hotel area.
 
@@ -30,12 +30,12 @@ Prices change. Where you see *approx.*, double-check the official website before
 - [ ] **Register on Visit Japan Web** (free, run by Japan's Digital Agency). One QR code covers immigration and customs. It is optional — paper forms still exist — but it makes arrival faster. [F13]
 - [ ] **Set up mobile data.** Buy an eSIM before you leave so your phone works the moment you land (maps, translation, train apps).
 - [ ] **Decide how you'll pay for trains:**
-  - iPhone user → the **Welcome Suica Mobile** app: no deposit, balance valid for 180 days from your first top-up. You top up through Apple Pay with a card in your own name. Some countries have restrictions, so test it before you fly. [F07]
-  - Android user, or you want a physical card → buy a Suica or PASMO card at the station. Card sales resumed in March 2025. [F08]
+    - iPhone user → the **Welcome Suica Mobile** app: no deposit, balance valid for 180 days from your first top-up. You top up through Apple Pay with a card in your own name. Some countries have restrictions, so test it before you fly. [F07]
+    - Android user, or you want a physical card → buy a Suica or PASMO card at the station. Card sales resumed in March 2025. [F08]
 - [ ] **Shopping plans? Read Section 5 now.** Japan's tax-free system changed on **November 1, 2026**. [F11]
 - [ ] **Save these numbers in your phone:**
-  - Police **110** / Ambulance & Fire **119** [F15]
-  - **Japan Visitor Hotline** (24/7, English available): +81-50-3816-2787 [F14]
+    - Police **110** / Ambulance & Fire **119** [F15]
+    - **Japan Visitor Hotline** (24/7, English available): +81-50-3816-2787 [F14]
 
 ---
 
@@ -51,6 +51,7 @@ Narita is about an hour from central Tokyo. Choose by **where your hotel is** an
 | **Airport bus** | Tokyo Station, Ginza | From 65 min to Tokyo Station | ¥1,500 daytime / ¥3,000 late night [F05] | Heavy luggage, no transfers |
 
 **Simple rule:**
+
 - Hotel in the **east** (Ueno, Asakusa) → Skyliner
 - Hotel in the **west** (Shinjuku, Shibuya) → N'EX round trip, if you also fly out from Narita
 - **Big suitcases, late arrival** → bus
@@ -91,6 +92,7 @@ The clock starts the first time you go through a ticket gate — not when you bu
 ## 5. Shopping: the new tax-free system (from November 1, 2026)
 
 What changed [F11][F12]:
+
 1. **You now pay the full price, tax included, at the store.**
 2. Keep your goods and your passport together.
 3. **Within 90 days of purchase**, at your departure airport, go to the tax-free kiosk in the **international departure lobby — before you check in your bags**. Scan your passport and complete the customs check.
@@ -98,6 +100,7 @@ What changed [F11][F12]:
 5. **No customs check = no refund.**
 
 Other points:
+
 - You still need to spend approx. ¥5,000 or more (before tax) per store, per day. [F12]
 - Consumables (cosmetics, snacks) no longer need special sealed bags. [F12]
 
@@ -108,9 +111,10 @@ Other points:
 ## 6. Day plans (pick the one that matches your hotel)
 
 **Day 1 — Arrival day: stay close, stay easy**
+
 - Check in, walk 10 minutes around your hotel, have dinner at the nearest busy local restaurant.
 - Buy water and breakfast at a convenience store (konbini) for tomorrow morning.
-- Go to bed early. Jet lag is the #1 thing that ruins day 2.
+- Go to bed early. Jet lag can easily ruin day 2.
 
 **Day 2 — East Tokyo (traditional side)**
 Asakusa (morning, before the crowds) → Ueno (park and museums) → Akihabara (evening)
@@ -134,16 +138,19 @@ Harajuku → Shibuya → Shinjuku (night views)
 ## 8. Printable checklist
 
 **Before you fly**
+
 - [ ] Visit Japan Web registered
 - [ ] eSIM installed
 - [ ] Train payment decided (Welcome Suica Mobile or physical card)
 - [ ] Emergency numbers saved
 
 **Arrival day**
+
 - [ ] Route from the airport chosen (Section 2 or 3)
 - [ ] Konbini breakfast for day 2 bought
 
 **Before you leave Japan**
+
 - [ ] Tax-free items within 90 days of purchase
 - [ ] Tax-free kiosk **before** bag check-in
 - [ ] Passport ready
