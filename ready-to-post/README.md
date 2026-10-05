@@ -25,3 +25,8 @@
 2. 「ファイル」アプリ →「このiPhone内」→ `ready-to-post.zip` をタップすると、フォルダに展開される
 3. `02_reels` を開く → 右上の「…」→「選択」→ `_video.mp4` と `_cover.png` を全部選ぶ → 左下の共有ボタン →「○項目を保存」→ 全部まとめて「写真」に入る
 4. キャプションは、ファイルアプリで `_caption.txt` を開いてコピーする
+
+## 投稿ボード（いちばん楽な使い方）
+https://claude.ai/artifact/1cHusyq7bBKLipWPe7eiJb
+iPhoneのClaudeアプリで開くと、今日のリールが一番上に開いた状態で出る。「① 動画を保存」→ 共有メニューで「Instagram」または「ビデオを保存」→「② キャプションをコピー」→ Instagramで貼る。
+素材が増えたら Claude が `python3 apps/post-board/build.py` でページを作り直して、同じURLに公開する。
