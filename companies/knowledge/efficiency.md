@@ -10,3 +10,8 @@
 ## 2026-10-10 画像・動画の自動生成は、このコンテナで可能
 - Pillow（PyPI経由で取得可）、日本語フォント（IPAゴシック）、ffmpeg が利用可能。カルーセル画像や字幕つき動画を、API無しで生成できる
 - 投稿そのもの（X、Threads、Instagram）は、ドメイン遮断のため私からはできない。予約投稿はKeitaの端末で行う
+
+## 2026-10-11 週次
+- Google Docs の更新は `batchUpdate`（`replaceAllText`／`insertText`）で、ドキュメントの先頭に「確認済み: 日付・回答」を追記できる。ファイルの移動は `update_file` の `parentId`
+- 新規リポジトリの公開は、空の作業ディレクトリで `git init` → ファイルを入れる → 個人情報のgrep → 未連携の作成者名でコミット → push、の順が安全
+- 校正: `companies/site/lint/README.md`（textlintの手順）

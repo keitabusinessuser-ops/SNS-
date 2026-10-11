@@ -64,3 +64,4 @@ Keitaに毎回見てほしいものを入れる箱。「見た」と言われた
 | 09 | 公開後の確認（サイトが表示されるか・名前が出ていないか）**→確認済みへ移動（2026-10-11。スマホは未確認→10へ再掲）** | 1gu7La89vw7YeK7-4ZoVEYO266WNsnHSewFMeBWRAa8g |
 | 10 | サイト文章v3の確認（人間らしさ・用語の言い換え） | 1l3MjXgc50KgGQEbhkfibvLk0VaWqz-4QAqdRIV1hwVk |
 | 11 | Keitaの文章サンプルを送る（口調を寄せるため） | 1j5zSG-PV7DEoofX7XQAT8PrwcYP0MZo1fOHImuENGEw |
+| 12 | E-A第1弾「承認ゲートの作り方」の確認（公開前） | 1Nl-CAUzNL2zWMbnLgKh6vt0bYr7PM9LQcLmk5dRLmaQ |
