@@ -15,7 +15,7 @@
 4. 学びを `companies/knowledge/` に追記し、決定を各社の `decisions.md` に記録する
 5. `companies/reports/YYYY-MM-DD-am.md`（朝）または `-pm.md`（夜）を作る。成果のみ。作業の経緯は書かない
 6. `git add`、`git commit`、`git pull --rebase`、`git push`（ブランチ: `claude/sns-operations-structure-djelg8`）。競合したら、片方の変更を捨てずに統合する
-6.5. Drive同期: `drive-sync.md` の手順で、00_ダッシュボードを最新に更新し、報告をフォルダに保存する（失敗したら報告に書く）
+6.5. Drive同期（`drive-sync.md`）: 新しい確認依頼を「要確認」フォルダに追加し、Keitaが「見た」と言ったものを「確認済み」へ移す。さらに `drive-sync.md` の手順で、00_ダッシュボードを最新に更新し、報告をフォルダに保存する（失敗したら報告に書く）
 7. PushNotification で、Keitaに「報告あり」を1行で送る（本人宛て）
 
 ## 報告の形式
