@@ -61,4 +61,6 @@ Keitaに毎回見てほしいものを入れる箱。「見た」と言われた
 | 06 | 公開リポジトリの作り直し（空で作り直す）**→確認済みへ移動（2026-10-11）** | 1qu3Z79EWNSpPJxtQ9r5ia5IvMKSFX6eH0J1nscMvwhk |
 | 07 | noteの名前を「ひとりとAI」に変更 | 1UK1ArrtSRJFvVOWOGT49zvsKUp05DbCdlwCq-BlG0Bo |
 | 08 | 法務部のための情報源（ドメイン追加） | 1MZ9vJX0HUbK10dmx9qu9Yr599BXbthRaWuuzUx-KDEg |
-| 09 | 公開後の確認（サイトが表示されるか・名前が出ていないか） | 1gu7La89vw7YeK7-4ZoVEYO266WNsnHSewFMeBWRAa8g |
+| 09 | 公開後の確認（サイトが表示されるか・名前が出ていないか）**→確認済みへ移動（2026-10-11。スマホは未確認→10へ再掲）** | 1gu7La89vw7YeK7-4ZoVEYO266WNsnHSewFMeBWRAa8g |
+| 10 | サイト文章v3の確認（人間らしさ・用語の言い換え） | 1l3MjXgc50KgGQEbhkfibvLk0VaWqz-4QAqdRIV1hwVk |
+| 11 | Keitaの文章サンプルを送る（口調を寄せるため） | 1j5zSG-PV7DEoofX7XQAT8PrwcYP0MZo1fOHImuENGEw |

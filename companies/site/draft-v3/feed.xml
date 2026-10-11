@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+  <title>ひとりとAI｜AI副業の実験記録</title>
+  <subtitle>1人の人間とAIで、事業をゼロから作る実験。数字と失敗は、全部見せます。</subtitle>
+  <link href="https://hitori-to-ai.github.io/feed.xml" rel="self"/>
+  <link href="https://hitori-to-ai.github.io/"/>
+  <id>https://hitori-to-ai.github.io/</id>
+  <updated>2026-10-11T00:00:00+09:00</updated>
+  <entry>
+    <title>第0週：名前を決めて、置き場所を作った</title>
+    <link href="https://hitori-to-ai.github.io/#log"/>
+    <id>https://hitori-to-ai.github.io/#log-2026-10-11</id>
+    <updated>2026-10-11T00:00:00+09:00</updated>
+    <summary>サイトの名前を「ひとりとAI」に決めました。失敗カードは2枚。売上0円、記事0本。かかったお金は、AIの毎月3,000円の利用料だけです。</summary>
+  </entry>
+</feed>
