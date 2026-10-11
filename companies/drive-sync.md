@@ -57,7 +57,7 @@ Keitaに毎回見てほしいものを入れる箱。「見た」と言われた
 | 02 | 公開範囲の確認（2点）**→確認済みへ移動（2026-10-11）** | 1lwZv8gza6N6ICVtAOm50aeC330RhH-fnSE--VioRKmE |
 | 03 | note記事① 確認（ai-sugiru） | 13XUBRYuduvXMTkyxKCNKYbdFtWQnlvBoPQRu2EczsiQ |
 | 04 | note記事② 確認（ai-eigyo-reisetsu・空欄あり） | 1O5uAwk23q0CsVkKZShwUX6Ss0zNI3ktI2ZhopQuxOj4 |
-| 05 | サイト初版の公開OK確認（ひとりとAI） | 1-Dm9rgkATVfJtNqda5OkNu3TptaJZ-laBbk7fNNlNjY |
+| 05 | サイト初版の公開OK確認（ひとりとAI）**→確認済みへ移動（2026-10-11）** | 1-Dm9rgkATVfJtNqda5OkNu3TptaJZ-laBbk7fNNlNjY |
 | 06 | 公開リポジトリの作り直し（空で作り直す） | 1qu3Z79EWNSpPJxtQ9r5ia5IvMKSFX6eH0J1nscMvwhk |
 | 07 | noteの名前を「ひとりとAI」に変更 | 1UK1ArrtSRJFvVOWOGT49zvsKUp05DbCdlwCq-BlG0Bo |
-| 08 | 法務部のための情報源（ドメイン追加） | （作成後に記入） |
+| 08 | 法務部のための情報源（ドメイン追加） | 1MZ9vJX0HUbK10dmx9qu9Yr599BXbthRaWuuzUx-KDEg |
