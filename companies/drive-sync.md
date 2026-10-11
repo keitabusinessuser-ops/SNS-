@@ -54,6 +54,6 @@ Keitaに毎回見てほしいものを入れる箱。「見た」と言われた
 | NN | 題名 | Doc ID |
 |---|---|---|
 | 01 | 公開用GitHubリポジトリを作る | 1i2pehkwU88C9wspU8d_oVVdK5WNRtve13HZQ5UOsNmM |
-| 02 | 公開範囲の確認（2点） | 1lwZv8gza6N6ICVtAOm50aeC330RhH-fnSE--VioRKmE |
+| 02 | 公開範囲の確認（2点）**→確認済みへ移動（2026-10-11）** | 1lwZv8gza6N6ICVtAOm50aeC330RhH-fnSE--VioRKmE |
 | 03 | note記事① 確認（ai-sugiru） | 13XUBRYuduvXMTkyxKCNKYbdFtWQnlvBoPQRu2EczsiQ |
 | 04 | note記事② 確認（ai-eigyo-reisetsu・空欄あり） | 1O5uAwk23q0CsVkKZShwUX6Ss0zNI3ktI2ZhopQuxOj4 |
