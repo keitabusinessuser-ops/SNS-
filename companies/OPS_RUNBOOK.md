@@ -5,6 +5,7 @@
 
 ## 起動時（毎回）
 1. `git pull --rebase origin claude/sns-operations-structure-djelg8`
+1.5. 指標の保存: `scripts/collect-metrics.sh` を実行（GitHubの指標を `companies/metrics/` に保存。トラフィックは14日で消える）
 2. 読む: `CLAUDE.md`、`companies/MISSION.md`、`companies/BACKLOG.md`、`companies/keita-todo.md`、直近の `companies/reports/`、各社の `decisions.md`、`companies/kpi.md`
 3. 前回から変わったこと（Keitaの指示、数字、環境の制約）を把握する
 
