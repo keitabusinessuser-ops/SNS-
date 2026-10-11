@@ -60,3 +60,4 @@ Keitaに毎回見てほしいものを入れる箱。「見た」と言われた
 | 05 | サイト初版の公開OK確認（ひとりとAI） | 1-Dm9rgkATVfJtNqda5OkNu3TptaJZ-laBbk7fNNlNjY |
 | 06 | 公開リポジトリの作り直し（空で作り直す） | 1qu3Z79EWNSpPJxtQ9r5ia5IvMKSFX6eH0J1nscMvwhk |
 | 07 | noteの名前を「ひとりとAI」に変更 | 1UK1ArrtSRJFvVOWOGT49zvsKUp05DbCdlwCq-BlG0Bo |
+| 08 | 法務部のための情報源（ドメイン追加） | （作成後に記入） |
