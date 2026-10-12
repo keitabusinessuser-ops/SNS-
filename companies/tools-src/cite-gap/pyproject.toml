@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cite-gap"
+version = "0.1.0"
+description = "文章中の数字・断定に、出典か「未確認」の印があるかを点検するCLI（外部通信なし）"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "hitori-to-ai" }]
+keywords = ["citation", "lint", "japanese", "markdown", "fact-check"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Natural Language :: Japanese",
+    "Environment :: Console",
+    "Topic :: Text Processing :: Linguistic",
+]
+dependencies = []
+
+[project.scripts]
+cite-gap = "cite_gap.cli:main"
+
+# project.urls は公開用リポジトリのURLが決まってから追加する（GitHubのみ）
+
+[tool.setuptools.packages.find]
+where = ["src"]
