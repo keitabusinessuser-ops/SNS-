@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文字数カウント｜ひとりとAI</title>
+<meta name="description" content="文字数を数える無料ツール。空白・改行を含む／除く、行数、原稿用紙（400字詰め）の枚数、UTF-8のバイト数を、入力しながら確認できます。入力した文章は端末の外に出ません。">
+<meta property="og:title" content="文字数カウント｜ひとりとAI">
+<meta property="og:description" content="空白・改行を含む／除く、行数、原稿用紙換算、バイト数。入力した文章は端末の外に出ません。">
+<meta property="og:type" content="website">
+<style>
+:root{
+  --bg:#f6f1e7; --paper:#fffdf8; --fg:#25231f; --sub:#6a655b; --line:#e4dccb;
+  --green:#1f5c4a; --green-soft:#e1eee8; --clay:#b8492f; --clay-soft:#f6e3dc;
+  --radius:14px; --wrap:760px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#161512; --paper:#201f1b; --fg:#efece4; --sub:#aaa59a; --line:#363229;
+        --green:#8fd0b9; --green-soft:#1d2e28; --clay:#f09a80; --clay-soft:#33241f}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+  line-height:1.9;font-size:16px;-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+a{color:var(--green)}
+a:focus-visible,button:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;max-width:var(--wrap);margin:0 auto}
+.logo{font-weight:800;font-size:1.1rem;letter-spacing:.02em;color:var(--fg);text-decoration:none}
+.logo span{color:var(--green)}
+header.top a.back{font-size:.9rem;color:var(--sub);text-decoration:none}
+header.top a.back:hover{color:var(--green)}
+
+.hero{padding:32px 0 8px}
+.eyebrow{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;font-size:.8rem;padding:4px 12px;border-radius:99px;margin:0 0 14px}
+h1{font-size:clamp(1.5rem,6.2vw,2.2rem);line-height:1.4;margin:0 0 10px;letter-spacing:-.01em}
+.lead{font-size:1.05rem;color:var(--sub);margin:0 0 6px}
+.meta{font-size:.82rem;color:var(--sub);margin:0}
+
+.tool{margin-top:24px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+label.field{display:block;font-weight:700;margin:0 0 6px}
+textarea{width:100%;min-height:220px;resize:vertical;font:inherit;font-size:16px;line-height:1.7;
+  color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:12px}
+textarea:focus{border-color:var(--green)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+button{font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;border-radius:99px;padding:10px 20px;border:2px solid var(--line);background:transparent;color:var(--fg)}
+button.primary{background:var(--green);border-color:var(--green);color:var(--bg)}
+button:hover:not(:disabled){filter:brightness(1.08)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.hint{font-size:.85rem;color:var(--sub);margin:8px 0 0;line-height:1.7}
+
+.empty{background:var(--green-soft);border-radius:10px;padding:10px 14px;margin:16px 0 0;font-size:.92rem}
+.empty[hidden]{display:none}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 0}
+@media (max-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px;min-width:0}
+.stat b{display:block;font-size:clamp(1.5rem,7vw,2rem);line-height:1.25;color:var(--green);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stat b small{font-size:.8rem;font-weight:600;color:var(--sub);margin-left:3px}
+.stat span{display:block;font-size:.8rem;color:var(--sub);line-height:1.5}
+.stat.main{grid-column:1/-1}
+@media (min-width:561px){.stat.main{grid-column:auto}}
+
+section{padding:36px 0 0}
+section>h2{font-size:1.25rem;margin:0 0 8px;line-height:1.5}
+section p{margin:0 0 12px}
+.small{font-size:.92rem;color:var(--sub)}
+
+.diff{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.diff th,.diff td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;line-height:1.6;vertical-align:top}
+.diff th{font-weight:700;background:var(--green-soft)}
+.diff td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.diff tr:last-child td{border-bottom:0}
+
+pre.out{margin:0;white-space:pre-wrap;font:inherit;font-size:.92rem;line-height:1.8;color:var(--fg);background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px}
+.status{font-size:.85rem;color:var(--green);min-height:1.5em;margin:8px 0 0}
+
+.notice{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:12px 16px;margin:0 0 12px;font-size:.92rem}
+
+footer{margin:48px 0 0;padding:24px 0 56px;border-top:1px solid var(--line);color:var(--sub);font-size:.85rem;line-height:1.8}
+footer p{margin:0 0 6px}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="../../">ひとりと<span>AI</span></a>
+  <a class="back" href="../../">サイトのトップへ戻る</a>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eyebrow">小さなツール</p>
+    <h1>文字数カウント</h1>
+    <p class="lead">貼りつけるだけで、数字が出ます。空白や改行を数えるか数えないかも、見比べられます。</p>
+    <p class="meta">最終更新: <time datetime="2026-10-12">2026-10-12</time></p>
+  </div>
+
+  <div class="tool">
+    <label class="field" for="src">文章を入れてください</label>
+    <textarea id="src" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="ここに文章を貼りつけるか、入力します"></textarea>
+    <div class="row">
+      <button type="button" id="clear">消す</button>
+    </div>
+    <p class="hint">入力した文章は、この端末のブラウザの中だけで数えます。送信も保存もしません。</p>
+
+    <p class="empty" id="empty">まだ入力がありません。文章を入れると、ここに数字が出ます。</p>
+
+    <div class="grid" aria-live="polite">
+      <div class="stat main"><b id="n-all">0<small>字</small></b><span>文字数（空白・改行を含む）</span></div>
+      <div class="stat"><b id="n-nospace">0<small>字</small></b><span>空白を除く<br>（改行も除く）</span></div>
+      <div class="stat"><b id="n-nonl">0<small>字</small></b><span>改行だけを除く<br>（空白は数える）</span></div>
+      <div class="stat"><b id="n-lines">0<small>行</small></b><span>行数</span></div>
+      <div class="stat"><b id="n-gen">0<small>枚</small></b><span>原稿用紙（400字詰め）</span></div>
+      <div class="stat"><b id="n-bytes">0<small>B</small></b><span>UTF-8のバイト数</span></div>
+    </div>
+  </div>
+
+  <section id="copy">
+    <h2>結果をコピーする</h2>
+    <pre class="out" id="out" aria-label="コピー用の結果">（入力すると、ここに結果が出ます）</pre>
+    <div class="row">
+      <button type="button" class="primary" id="copy-btn" disabled>結果をコピー</button>
+    </div>
+    <p class="status" id="status" role="status"></p>
+  </section>
+
+  <section id="how">
+    <h2>数え方によって違いが出ます</h2>
+    <p>上の数字は「見た目で1文字」を1と数えています。ブラウザの機能（Intl.Segmenter）で区切った単位で、専門的には書記素（しょきそ）と呼びます。</p>
+    <p>ただ、絵文字や、結合文字・異体字セレクタ（字の形を切り替える見えない文字）がつく文字は、数え方で数字が変わります。同じ文章でも、次のように違います。</p>
+    <table class="diff">
+      <thead><tr><th>例</th><th>見た目</th><th>コードポイント</th><th>UTF-16の長さ</th></tr></thead>
+      <tbody>
+        <tr><td>あ</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr>
+        <tr><td>😀</td><td class="num">1</td><td class="num">1</td><td class="num">2</td></tr>
+        <tr><td>👍🏽（肌の色つき）</td><td class="num">1</td><td class="num">2</td><td class="num">4</td></tr>
+        <tr><td>👨‍👩‍👧（家族）</td><td class="num">1</td><td class="num">5</td><td class="num">8</td></tr>
+      </tbody>
+    </table>
+    <p class="small">コードポイントは、文字に振られた番号の数。UTF-16の長さは、JavaScriptの <code>length</code> が返す数です。数え方は、投稿先や提出先のサービスごとに違います。字数制限がきびしいときは、提出先の数え方で確かめてください。</p>
+    <p><b>いま入力している文章の場合</b></p>
+    <table class="diff" aria-label="いまの文章での数え方の違い">
+      <tbody>
+        <tr><td>見た目（書記素）</td><td class="num" id="d-g">0</td></tr>
+        <tr><td>コードポイント</td><td class="num" id="d-cp">0</td></tr>
+        <tr><td>UTF-16の長さ</td><td class="num" id="d-u16">0</td></tr>
+      </tbody>
+    </table>
+    <p class="small" id="seg-warn" hidden>このブラウザは Intl.Segmenter に対応していないため、上の「文字数」はコードポイントで数えています。</p>
+  </section>
+
+  <section id="rules">
+    <h2>数え方のきまり</h2>
+    <ul class="small">
+      <li>「空白」は、半角スペース、全角スペース、タブ、改行など、JavaScriptが空白とみなす文字です。</li>
+      <li>「改行だけを除く」は、空白は数えたまま、改行だけを引きます。</li>
+      <li>行数は、改行の数に1を足した数です。何も入力がなければ0行。</li>
+      <li>原稿用紙は、改行を除いた文字数を400で割って、切り上げています。段落の終わりの余白や、行頭の禁則は考えていません。目安です。</li>
+      <li>バイト数は、UTF-8で保存したときの大きさです。漢字やひらがなは1字3バイトが多く、半角英数は1バイト。</li>
+    </ul>
+  </section>
+
+  <section id="notes">
+    <h2>使う前に</h2>
+    <p class="notice">計算結果は目安です。重要な書類・契約・申告は、提出先や専門家の確認を優先してください。法律・税務・医療・投資の助言ではありません。</p>
+    <p>間違いを見つけたら、公開の<a href="https://github.com/hitori-to-ai/hitori-to-ai.github.io/issues" rel="noopener">GitHubのIssue</a>に書いてください。氏名、メール、住所、電話番号、勤務先、入力した文章は書かないでください。メールやフォームの窓口は作っていません。Issueを書くにはGitHubのアカウントが要り、そのユーザー名は公開されます。</p>
+  </section>
+
+  <footer>
+    <p><a href="../../">ひとりとAI（サイトのトップ）へ戻る</a></p>
+    <p>最終更新: 2026-10-12</p>
+    <p>このページはAI（Claude）が作り、運営者が確認して公開しています。広告や計測のスクリプトは入れていません。ページの配信はGitHub Pagesで、配信側のログは、こちらでは見られません。</p>
+    <p>動作確認: 2026-10-12、Chromium系ブラウザで、自己テスト11項目が通りました。ほかのブラウザは確認していません。</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var GENKO = 400;
+  var segmenter = (typeof Intl !== "undefined" && Intl.Segmenter)
+    ? new Intl.Segmenter("ja", {granularity: "grapheme"}) : null;
+
+  // 見た目の1文字（書記素）。非対応ブラウザではコードポイントで代用
+  function countGraphemes(str){
+    if(!str) return 0;
+    if(!segmenter) return countCodePoints(str);
+    var n = 0, it = segmenter.segment(str)[Symbol.iterator](), r;
+    while(!(r = it.next()).done) n++;
+    return n;
+  }
+  function countCodePoints(str){
+    var n = 0;
+    for(var ch of str){ n++; }
+    return n;
+  }
+  function countUtf16(str){ return str.length; }
+  function countBytes(str){ return new TextEncoder().encode(str).length; }
+  function removeWhitespace(str){ return str.replace(/\s/g, ""); }
+  function removeNewlines(str){ return str.replace(/\r\n|[\n\r\u2028\u2029]/g, ""); }
+  function countLines(str){
+    if(str === "") return 0;
+    return str.split(/\r\n|[\n\r\u2028\u2029]/).length;
+  }
+  function genkoSheets(charsWithoutNewline){
+    if(charsWithoutNewline <= 0) return 0;
+    return Math.ceil(charsWithoutNewline / GENKO);
+  }
+
+  function analyze(text){
+    text = text == null ? "" : String(text);
+    var nonl = removeNewlines(text);
+    var nospace = removeWhitespace(text);
+    var nNoNl = countGraphemes(nonl);
+    return {
+      all: countGraphemes(text),
+      noSpace: countGraphemes(nospace),
+      noNewline: nNoNl,
+      lines: countLines(text),
+      genko: genkoSheets(nNoNl),
+      bytes: countBytes(text),
+      codePoints: countCodePoints(text),
+      utf16: countUtf16(text),
+      segmenter: !!segmenter
+    };
+  }
+
+  function formatResult(r){
+    return [
+      "文字数（空白・改行を含む）: " + r.all + "字",
+      "空白を除く: " + r.noSpace + "字",
+      "改行を除く: " + r.noNewline + "字",
+      "行数: " + r.lines + "行",
+      "原稿用紙（400字詰め）: " + r.genko + "枚",
+      "UTF-8のバイト数: " + r.bytes + "B",
+      "（コードポイントで数えると " + r.codePoints + "字。数え方によって違いが出ます）"
+    ].join("\n");
+  }
+
+  // ---- 画面 ----
+  var $ = function(id){ return document.getElementById(id); };
+  var src = $("src"), out = $("out"), copyBtn = $("copy-btn"), statusEl = $("status");
+  var EMPTY_OUT = "（入力すると、ここに結果が出ます）";
+
+  function setStat(id, value, unit){
+    var el = $(id);
+    el.textContent = String(value);
+    var s = document.createElement("small");
+    s.textContent = unit;
+    el.appendChild(s);
+  }
+
+  function render(){
+    var text = src.value;
+    var r = analyze(text);
+    setStat("n-all", r.all, "字");
+    setStat("n-nospace", r.noSpace, "字");
+    setStat("n-nonl", r.noNewline, "字");
+    setStat("n-lines", r.lines, "行");
+    setStat("n-gen", r.genko, "枚");
+    setStat("n-bytes", r.bytes, "B");
+    $("d-g").textContent = r.all;
+    $("d-cp").textContent = r.codePoints;
+    $("d-u16").textContent = r.utf16;
+    $("seg-warn").hidden = r.segmenter;
+    var isEmpty = text === "";
+    $("empty").hidden = !isEmpty;
+    out.textContent = isEmpty ? EMPTY_OUT : formatResult(r);
+    copyBtn.disabled = isEmpty;
+    statusEl.textContent = "";
+  }
+
+  function copyText(str){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(str);
+    }
+    return new Promise(function(resolve, reject){
+      var ta = document.createElement("textarea");
+      ta.value = str; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try{ ok = document.execCommand("copy"); }catch(e){}
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error("copy failed"));
+    });
+  }
+
+  src.addEventListener("input", render);
+  $("clear").addEventListener("click", function(){ src.value = ""; render(); src.focus(); });
+  copyBtn.addEventListener("click", function(){
+    copyText(out.textContent).then(function(){
+      statusEl.textContent = "コピーしました。";
+    }, function(){
+      statusEl.textContent = "コピーできませんでした。上の結果を選んで、手でコピーしてください。";
+    });
+  });
+
+  // 動作確認用: ブラウザのコンソールで mojiCount.selfTest() を実行
+  function selfTest(){
+    var cases = [
+      ["", {all:0, noSpace:0, noNewline:0, lines:0, genko:0, bytes:0}],
+      ["あいう", {all:3, noSpace:3, noNewline:3, lines:1, genko:1, bytes:9}],
+      ["a b　c\nd", {all:7, noSpace:4, noNewline:6, lines:2, genko:1, bytes:9}],
+      ["a\n", {all:2, noSpace:1, noNewline:1, lines:2, genko:1, bytes:2}],
+      ["\n\n", {all:2, noSpace:0, noNewline:0, lines:3, genko:0, bytes:2}],
+      ["x".repeat(400), {all:400, genko:1}],
+      ["x".repeat(401), {all:401, genko:2}],
+      ["😀", {all:1, codePoints:1, utf16:2, bytes:4}],
+      ["👍🏽", {all:1, codePoints:2, utf16:4, bytes:8}],
+      ["👨‍👩‍👧", {all:1, codePoints:5, utf16:8, bytes:18}],
+      ["辻󠄀", {all:1, codePoints:2, utf16:3, bytes:7}]
+    ];
+    var fails = [];
+    cases.forEach(function(c){
+      var r = analyze(c[0]);
+      Object.keys(c[1]).forEach(function(k){
+        if(r[k] !== c[1][k]) fails.push({input: JSON.stringify(c[0]), key: k, expected: c[1][k], actual: r[k]});
+      });
+    });
+    var res = {ok: fails.length === 0, total: cases.length, segmenter: !!segmenter, fails: fails};
+    console.log(res.ok ? "selfTest OK" : "selfTest FAILED", res);
+    return res;
+  }
+
+  window.mojiCount = {
+    analyze: analyze, formatResult: formatResult, selfTest: selfTest,
+    countGraphemes: countGraphemes, countCodePoints: countCodePoints, countUtf16: countUtf16,
+    countBytes: countBytes, countLines: countLines, removeWhitespace: removeWhitespace,
+    removeNewlines: removeNewlines, genkoSheets: genkoSheets
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -6,11 +6,11 @@
 | 優先 | タスク | 状態 | 担当 | 成果物 |
 |---|---|---|---|---|
 | P0 | E-A: 承認ゲート設計テンプレ（最初の公開物）。下書き→compliance→Keita確認→サイトに掲載 | 進行（下書き作成中） | media-editor＋compliance | `site/drafts/e-a-01-approval-gates.md` |
-| P0 | 法務部の蓄積: 優先1（広告・表示）済 → 優先2（個人情報）済 → 次は優先3（著作権・権利。生成AIの扱いを含む） | 進行 | legal | `legal/laws/`、`legal/issues/` |
+| P0 | 法務部の蓄積: 優先1（広告・表示）済 → 優先2（個人情報）済 → 優先3（著作権・商標・肖像）済み → 次は優先4（名誉・プライバシー、情報流通プラットフォーム対処法）と優先5（契約・未成年者取消） | 進行 | legal | `legal/laws/`、`legal/issues/` |
 | P0 | 計測: GitHub指標の自動保存（済）。サイト訪問の解析は、導入前の法務確認（外部送信規律・通知）とKeita作業が要る。推奨はCloudflare Web Analytics（`knowledge/analytics-plan.md`）。Keitaの未確認が多いので、依頼は後ろに回す | 進行（保存は稼働） | scout＋legal | `metrics/`、`knowledge/analytics-plan.md` |
 | P0 | サイト文章v3の公開（Keita確認 Drive 10 の後）。文章サンプル（Drive 11）で口調を寄せ直す | 待ち（Keita） | media-editor | `site/draft-v3/` |
-| P1 | E-B: 題材選定は完了（推奨5本: 文字数カウント／和暦西暦／日数計算／トークン概算／AI用語集）。次は最初の1本（文字数カウント）の制作→審査→Keita確認 | 進行 | media-editor＋compliance | `site/e-b-topics-01.md` |
-| P1 | E-C: PyPI/npm小ツール2本の設計（認証情報はKeita本人作業） | 新規 | CEO | `tools-src/` |
+| P1 | E-B: 題材選定は完了（推奨5本: 文字数カウント／和暦西暦／日数計算／トークン概算／AI用語集）。最初の1本（文字数カウント）は制作・動作確認・審査済み（`site/e-b/moji-count/`）。公開は、Keita確認（Drive 13）の後 | 進行 | media-editor＋compliance | `site/e-b-topics-01.md` |
+| P1 | E-C: 設計済み（`tools-src/DESIGN.md`）。推奨: cite-gap(PyPI)、draftgate(npm)。次は実装→審査。公開（アカウント・2FA・トークン）はKeita本人作業で、Keitaの未確認が減ってから依頼 | 進行 | CEO＋scout | `tools-src/` |
 | P1 | noteの名前変更（Keita、Drive 07）と、note記事2本の確認（Drive 03/04の旧版→再確認） | 待ち（Keita） | — | — |
 | P1 | 思考ログ: 判断を毎回追記。週次で `keita-model.md` 更新 | 進行（v0作成） | CEO | `thinking-log/` |
 | P2 | 事実ログを毎週作る（第0週を作成） | 進行 | analyst | `niche-media/log/` |

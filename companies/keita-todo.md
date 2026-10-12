@@ -27,3 +27,4 @@
 | 中 | 古いリポジトリ `keitabusinessuser-ops/yarakashi-jigyobu` の削除（09の続き） | 公開の可能性が残る | 設定→危険ゾーン | 未 |
 | 中 | E-A第1弾の確認（Drive 12）。事実3点（口コミ案の経緯、3回の失敗の公開可否、履歴の件の書き方）に答える | 創作を避ける。公開は運営者確認の後 | Drive 12 | 未 |
 | 後 | サイトの訪問数の解析導入（Cloudflare Web Analytics等）。アカウント作成・規約同意・サイトへのスクリプト追加の承認が要る。**法務確認（外部送信規律・通知）の後。今は依頼しない** | 流入を測る | `knowledge/analytics-plan.md`、`legal/issues/site-analytics.md` | 後 |
+| 低 | E-B第1本「文字数カウント」の確認（Drive 13）。10・11・12の後でよい | 公開は運営者確認の後 | Drive 13 | 未 |
