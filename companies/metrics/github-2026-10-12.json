@@ -1,5 +1,5 @@
 {
- "collected_at": "2026-10-12T08:43:10.851383+09:00",
+ "collected_at": "2026-10-12T20:41:06.684153+09:00",
  "repo": "hitori-to-ai/hitori-to-ai.github.io",
  "stars": 0,
  "forks": 0,
@@ -83,8 +83,8 @@
   ]
  },
  "clones": {
-  "count": 0,
-  "uniques": 0,
+  "count": 11,
+  "uniques": 8,
   "clones": [
    {
     "timestamp": "2026-09-28T00:00:00Z",
@@ -153,8 +153,8 @@
    },
    {
     "timestamp": "2026-10-11T00:00:00Z",
-    "count": 0,
-    "uniques": 0
+    "count": 11,
+    "uniques": 8
    }
   ]
  },
