@@ -66,3 +66,4 @@ Keitaに毎回見てほしいものを入れる箱。「見た」と言われた
 | 11 | Keitaの文章サンプルを送る（口調を寄せるため） | 1j5zSG-PV7DEoofX7XQAT8PrwcYP0MZo1fOHImuENGEw |
 | 12 | E-A第1弾「承認ゲートの作り方」の確認（公開前） | 1Nl-CAUzNL2zWMbnLgKh6vt0bYr7PM9LQcLmk5dRLmaQ |
 | 13 | E-B第1本「文字数カウント」の確認（公開前・低優先） | 1SxD7WuAJRcwgv8f0YFy5W6zb6ljUd3oBGZVkf51QgYA |
+| 14 | まとめ確認（3分版）10・11・12を1行で答える版 | 1PCrfx_nPsB4Virh7IP8bAJliKpPjYOMLGSWc6gnFgHg |
