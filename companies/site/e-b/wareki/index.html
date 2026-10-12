@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>和暦↔西暦 変換｜ひとりとAI</title>
+<meta name="description" content="西暦から和暦、和暦から西暦へ。令和・平成・昭和・大正・明治に対応。改元の年は両方の元号を示します。入力は端末の外に出ません。">
+<meta property="og:title" content="和暦↔西暦 変換｜ひとりとAI">
+<meta property="og:description" content="令和・平成・昭和・大正・明治。改元の年は両方を表示。入力は端末の外に出ません。">
+<meta property="og:type" content="website">
+<style>
+:root{
+  --bg:#f6f1e7; --paper:#fffdf8; --fg:#25231f; --sub:#6a655b; --line:#e4dccb;
+  --green:#1f5c4a; --green-soft:#e1eee8; --clay:#b8492f; --clay-soft:#f6e3dc;
+  --radius:14px; --wrap:760px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#161512; --paper:#201f1b; --fg:#efece4; --sub:#aaa59a; --line:#363229;
+        --green:#8fd0b9; --green-soft:#1d2e28; --clay:#f09a80; --clay-soft:#33241f}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+  line-height:1.9;font-size:16px;-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+a{color:var(--green)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;max-width:var(--wrap);margin:0 auto}
+.logo{font-weight:800;font-size:1.1rem;letter-spacing:.02em;color:var(--fg);text-decoration:none}
+.logo span{color:var(--green)}
+header.top a.back{font-size:.9rem;color:var(--sub);text-decoration:none}
+header.top a.back:hover{color:var(--green)}
+
+.hero{padding:32px 0 8px}
+.eyebrow{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;font-size:.8rem;padding:4px 12px;border-radius:99px;margin:0 0 14px}
+h1{font-size:clamp(1.5rem,6.2vw,2.2rem);line-height:1.4;margin:0 0 10px;letter-spacing:-.01em}
+.lead{font-size:1.05rem;color:var(--sub);margin:0 0 6px}
+.meta{font-size:.82rem;color:var(--sub);margin:0}
+
+.today{margin-top:20px;background:var(--green-soft);border-radius:10px;padding:10px 14px;font-size:.95rem}
+.today b{color:var(--green)}
+
+.tool{margin-top:20px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.tool h2{font-size:1.1rem;margin:0 0 4px;line-height:1.5}
+.tool p.sub{margin:0 0 12px;font-size:.88rem;color:var(--sub);line-height:1.7}
+.fields{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-end}
+.f{display:flex;flex-direction:column;gap:2px;min-width:0}
+.f label{font-weight:700;font-size:.85rem}
+input,select{font:inherit;font-size:16px;line-height:1.5;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:8px 10px;max-width:100%}
+input:focus,select:focus{border-color:var(--green)}
+input.y{width:6.2em}
+input.md{width:4.4em}
+input.wy{width:6.2em}
+select{min-width:5.6em}
+.fields span.u{align-self:flex-end;padding-bottom:10px;font-size:.9rem;color:var(--sub)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 0}
+button{font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;border-radius:99px;padding:10px 20px;border:2px solid var(--line);background:transparent;color:var(--fg)}
+button.primary{background:var(--green);border-color:var(--green);color:var(--bg)}
+button:hover:not(:disabled){filter:brightness(1.08)}
+.hint{font-size:.85rem;color:var(--sub);margin:8px 0 0;line-height:1.7}
+
+.result{margin:14px 0 0;min-height:1.5em}
+.result .ans{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 8px}
+.result .ans b{display:block;font-size:clamp(1.3rem,6.4vw,1.8rem);line-height:1.4;color:var(--green)}
+.result .ans span{display:block;font-size:.85rem;color:var(--sub);line-height:1.7}
+.result .err{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:10px 14px;font-size:.92rem;margin:0}
+.result .note{font-size:.85rem;color:var(--sub);margin:0 0 6px;line-height:1.7}
+
+section{padding:36px 0 0}
+section>h2{font-size:1.25rem;margin:0 0 8px;line-height:1.5}
+section p{margin:0 0 12px}
+.small{font-size:.92rem;color:var(--sub)}
+
+.diff{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.diff th,.diff td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;line-height:1.6;vertical-align:top}
+.diff th{font-weight:700;background:var(--green-soft)}
+.diff td.num{font-variant-numeric:tabular-nums}
+.diff th:first-child,.diff td:first-child{white-space:nowrap}
+.diff tr:last-child td{border-bottom:0}
+
+.notice{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:12px 16px;margin:0 0 12px;font-size:.92rem}
+
+footer{margin:48px 0 0;padding:24px 0 56px;border-top:1px solid var(--line);color:var(--sub);font-size:.85rem;line-height:1.8}
+footer p{margin:0 0 6px}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="../../">ひとりと<span>AI</span></a>
+  <a class="back" href="../../">サイトのトップへ戻る</a>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eyebrow">小さなツール</p>
+    <h1>和暦↔西暦 変換</h1>
+    <p class="lead">西暦を入れると和暦、和暦を入れると西暦が出ます。改元の年は、両方の元号を並べます。</p>
+    <p class="meta">最終更新: <time datetime="2026-10-13">2026-10-13</time></p>
+  </div>
+
+  <p class="today" id="today" aria-live="polite">今日の和暦: 読み込み中…</p>
+
+  <form class="tool" id="f-seireki" novalidate>
+    <h2>西暦 → 和暦</h2>
+    <p class="sub">年だけでも、年月日でも入れられます。月と日は、入れるなら両方。</p>
+    <div class="fields">
+      <div class="f"><label for="s-y">西暦</label><input id="s-y" class="y" type="text" inputmode="numeric" autocomplete="off" placeholder="1989" maxlength="6"></div>
+      <span class="u">年</span>
+      <div class="f"><label for="s-m">月</label><input id="s-m" class="md" type="text" inputmode="numeric" autocomplete="off" placeholder="任意" maxlength="3"></div>
+      <span class="u">月</span>
+      <div class="f"><label for="s-d">日</label><input id="s-d" class="md" type="text" inputmode="numeric" autocomplete="off" placeholder="任意" maxlength="3"></div>
+      <span class="u">日</span>
+    </div>
+    <div class="row"><button type="submit" class="primary">和暦にする</button></div>
+    <div class="result" id="r-seireki" aria-live="polite"></div>
+  </form>
+
+  <form class="tool" id="f-wareki" novalidate>
+    <h2>和暦 → 西暦</h2>
+    <p class="sub">元年は「元」でも「1」でも構いません。</p>
+    <div class="fields">
+      <div class="f"><label for="w-era">元号</label>
+        <select id="w-era">
+          <option value="令和">令和</option>
+          <option value="平成">平成</option>
+          <option value="昭和">昭和</option>
+          <option value="大正">大正</option>
+          <option value="明治">明治</option>
+        </select></div>
+      <div class="f"><label for="w-y">年</label><input id="w-y" class="wy" type="text" inputmode="numeric" autocomplete="off" placeholder="元" maxlength="4"></div>
+      <span class="u">年</span>
+    </div>
+    <div class="row"><button type="submit" class="primary">西暦にする</button></div>
+    <div class="result" id="r-wareki" aria-live="polite"></div>
+  </form>
+
+  <p class="hint">入力した内容は、この端末のブラウザの中だけで計算します。送信も保存もしません。</p>
+
+  <section id="table">
+    <h2>改元日の一覧</h2>
+    <table class="diff">
+      <thead><tr><th>元号</th><th>はじまり</th><th>元年の西暦</th></tr></thead>
+      <tbody>
+        <tr><td>令和</td><td class="num">2019-05-01</td><td class="num">2019年</td></tr>
+        <tr><td>平成</td><td class="num">1989-01-08</td><td class="num">1989年</td></tr>
+        <tr><td>昭和</td><td class="num">1926-12-25</td><td class="num">1926年</td></tr>
+        <tr><td>大正</td><td class="num">1912-07-30</td><td class="num">1912年</td></tr>
+        <tr><td>明治</td><td class="num">1873-01-01（目安）</td><td class="num">1868年（目安）</td></tr>
+      </tbody>
+    </table>
+    <p class="small">改元の年は、前の元号の最後の年と、新しい元号の元年が重なります。たとえば1989年は、1月7日までが昭和64年、1月8日からが平成元年です。年だけを入れると、両方を出します。</p>
+  </section>
+
+  <section id="meiji">
+    <h2>明治は、ここまでが目安です</h2>
+    <p>明治5年までは、いまの暦（グレゴリオ暦）ではなく、旧暦（太陰太陽暦）が使われていました。新暦に変わったのは、旧暦の明治5年12月3日が、新暦の明治6年1月1日（1873-01-01）になった日です。</p>
+    <p>このため、明治元年〜5年は「西暦の年」と「旧暦の年」が日付までは合いません。このページでは、1868〜1872年を年だけの目安で出します。月日を入れても、日付までは扱いません。</p>
+    <p class="small">1868年より前は対象外です。1868年の前半は、明治の前の元号（慶応）にあたります。歴史の資料や公的な書類で日付が要るときは、公的な資料を確認してください。</p>
+  </section>
+
+  <section id="rules">
+    <h2>数え方のきまり</h2>
+    <ul class="small">
+      <li>西暦→和暦は、改元日の当日から新しい元号にします（1989-01-08は平成元年）。</li>
+      <li>年だけを入れた改元の年は、2つの元号を出します。</li>
+      <li>和暦→西暦は「元号の元年の西暦＋年−1」です。昭和64年は1989年、令和8年は2026年。</li>
+      <li>上限は、明治45年・大正15年・昭和64年・平成31年。これを超える年は、エラーにします。令和の上限は200年までです。</li>
+      <li>「今日」は、この端末の日付です。将来の改元は反映していません。</li>
+    </ul>
+  </section>
+
+  <section id="notes">
+    <h2>使う前に</h2>
+    <p class="notice">計算結果は目安です。履歴書・申請書などの公的な手続きは、提出先や公的な資料（官公庁の案内など）で確認してください。法律・税務・医療・投資の助言ではありません。</p>
+    <p>間違いを見つけたら、公開の<a href="https://github.com/hitori-to-ai/hitori-to-ai.github.io/issues" rel="noopener">GitHubのIssue</a>に書いてください。氏名、メール、住所、電話番号、勤務先、生年月日は書かないでください。メールやフォームの窓口は作っていません。Issueを書くにはGitHubのアカウントが要り、そのユーザー名は公開されます。</p>
+  </section>
+
+  <footer>
+    <p><a href="../../">ひとりとAI（サイトのトップ）へ戻る</a></p>
+    <p>最終更新: 2026-10-13</p>
+    <p>このページはAI（Claude）が作り、運営者が確認して公開しています。改元日は、公的な資料との突き合わせをしていません（未確認）。広告や計測のスクリプトは入れていません。ページの配信はGitHub Pagesで、配信側のログは、こちらでは見られません。</p>
+    <p>動作確認: 2026-10-13、Chromium系ブラウザで、自己テスト67項目が通りました。ほかのブラウザは確認していません。</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // 元号の表。start は改元日。明治は新暦導入日（1873-01-01）を日付の基準にし、
+  // 明治元年〜5年は旧暦の期間なので年のみ目安（firstYear で表す）
+  var ERAS = [
+    {name: "明治", firstYear: 1868, start: 18730101, last: 45, lastDay: "1912-07-29", startText: "1873-01-01"},
+    {name: "大正", firstYear: 1912, start: 19120730, last: 15, lastDay: "1926-12-24", startText: "1912-07-30"},
+    {name: "昭和", firstYear: 1926, start: 19261225, last: 64, lastDay: "1989-01-07", startText: "1926-12-25"},
+    {name: "平成", firstYear: 1989, start: 19890108, last: 31, lastDay: "2019-04-30", startText: "1989-01-08"},
+    {name: "令和", firstYear: 2019, start: 20190501, last: 200, lastDay: null, startText: "2019-05-01"}
+  ];
+  var MIN_YEAR = 1868, MAX_YEAR = 9999;
+  var MEIJI_NOTE = "明治元年〜5年は旧暦の期間です。西暦の年との対応は目安で、日付までは合いません。";
+
+  function eraByName(n){
+    for(var i = 0; i < ERAS.length; i++) if(ERAS[i].name === n) return ERAS[i];
+    return null;
+  }
+  function pad(n, w){ var s = String(n); while(s.length < w) s = "0" + s; return s; }
+  function yearLabel(y){ return y === 1 ? "元年" : y + "年"; }
+
+  // 全角数字を半角に。前後の空白を除く
+  function normalize(str){
+    return String(str == null ? "" : str).replace(/[０-９]/g, function(c){
+      return String.fromCharCode(c.charCodeAt(0) - 0xFEE0);
+    }).replace(/^[\s　]+|[\s　]+$/g, "");
+  }
+  function parseNum(str){
+    var s = normalize(str);
+    if(!/^[0-9]+$/.test(s)) return null;
+    return parseInt(s, 10);
+  }
+
+  function daysIn(y, m){
+    if(m === 2) return ((y % 4 === 0 && y % 100 !== 0) || y % 400 === 0) ? 29 : 28;
+    return (m === 4 || m === 6 || m === 9 || m === 11) ? 30 : 31;
+  }
+  function isValidDate(y, m, d){
+    return m >= 1 && m <= 12 && d >= 1 && d <= daysIn(y, m);
+  }
+
+  // 西暦の年(+月日) → 和暦。返り値 {ok, results:[{era, year, label, approx}], notes:[], error}
+  function fromSeireki(yText, mText, dText){
+    var y = parseNum(yText);
+    if(normalize(yText) === "") return fail("西暦の年を入れてください。");
+    if(y === null) return fail("西暦の年は、数字で入れてください。");
+    if(y < MIN_YEAR) return fail("1868年より前は対象外です。");
+    if(y > MAX_YEAR) return fail("9999年までの範囲で入れてください。");
+    var hasM = normalize(mText) !== "", hasD = normalize(dText) !== "";
+    if(hasM !== hasD) return fail("月と日は、両方入れるか、両方空にしてください。");
+    if(hasM){
+      var m = parseNum(mText), d = parseNum(dText);
+      if(m === null || d === null) return fail("月と日は、数字で入れてください。");
+      if(!isValidDate(y, m, d)) return fail(y + "年" + m + "月" + d + "日は、存在しない日付です。");
+      return fromDate(y, m, d);
+    }
+    return fromYear(y);
+  }
+
+  function fail(msg){ return {ok: false, error: msg, results: [], notes: []}; }
+  function mk(era, year, approx){
+    return {era: era.name, year: year, label: era.name + yearLabel(year), approx: !!approx};
+  }
+
+  // 年だけ。改元の年は両方
+  function fromYear(y){
+    var res = [], notes = [];
+    for(var i = 0; i < ERAS.length; i++){
+      var e = ERAS[i];
+      var endYear = (i + 1 < ERAS.length) ? ERAS[i + 1].firstYear : MAX_YEAR;
+      if(y >= e.firstYear && y <= endYear){
+        res.push(mk(e, y - e.firstYear + 1, e.name === "明治" && y < 1873));
+      }
+    }
+    if(y <= 1872){
+      notes.push(MEIJI_NOTE);
+      if(y === 1868) notes.push("1868年の前半は、明治の前の元号（慶応）にあたります。");
+    }
+    if(res.length === 2){
+      notes.push(boundaryNote(res));
+    }
+    if(y > new Date().getFullYear()) notes.push("まだ来ていない年です。将来の改元があれば、元号は変わります。");
+    return {ok: true, results: res, notes: notes, error: null};
+  }
+  function boundaryNote(res){
+    var prev = eraByName(res[0].era), next = eraByName(res[1].era);
+    return "この年は途中で改元しています。" + prev.lastDay + "までが" + res[0].label + "、" + next.startText + "からが" + res[1].label + "です。";
+  }
+
+  // 年月日（存在する日付）
+  function fromDate(y, m, d){
+    if(y < MIN_YEAR) return fail("1868年より前は対象外です。");
+    var key = y * 10000 + m * 100 + d;
+    var notes = [];
+    if(key < 18730101){
+      notes.push(MEIJI_NOTE);
+      notes.push("日付は旧暦と新暦で食い違うため、年のみを目安として出しています。");
+      if(y === 1868) notes.push("1868年の前半は、明治の前の元号（慶応）にあたります。");
+      return {ok: true, results: [mk(ERAS[0], y - 1867, true)], notes: notes, error: null};
+    }
+    var found = ERAS[0];
+    for(var i = 0; i < ERAS.length; i++) if(key >= ERAS[i].start) found = ERAS[i];
+    // 明治は 1873 → 6年（西暦 − 1867）
+    return {ok: true, results: [mk(found, y - found.firstYear + 1, false)], notes: notes, error: null};
+  }
+
+  // 和暦 → 西暦。返り値 {ok, year, notes, error}
+  function toSeireki(eraName, yText){
+    var e = eraByName(eraName);
+    if(!e) return {ok: false, error: "元号を選んでください。", notes: []};
+    var s = normalize(yText);
+    if(s === "") return {ok: false, error: "年を入れてください。「元」か数字です。", notes: []};
+    var n;
+    if(s === "元") n = 1;
+    else {
+      n = parseNum(s);
+      if(n === null) return {ok: false, error: "年は、数字か「元」で入れてください。", notes: []};
+    }
+    if(n < 1) return {ok: false, error: "年は1以上で入れてください（元年は1年です）。", notes: []};
+    if(n > e.last){
+      var msg = e.name + "は" + e.last + "年までです。";
+      if(e.name !== "令和") msg += "（" + e.lastDay + "まで）";
+      return {ok: false, error: msg, notes: []};
+    }
+    var year = e.firstYear + n - 1;
+    var notes = [];
+    if(e.name === "明治" && n <= 5) notes.push(MEIJI_NOTE);
+    if(e.name === "明治" && n === 1) notes.push("1868年の前半は慶応です。明治元年は同年の秋からと言われますが、日付は未確認のため扱いません。");
+    if(n === 1 && e.name !== "明治") notes.push(e.name + "元年は" + e.startText + "から年末までです。");
+    if(n === e.last && e.lastDay) notes.push(e.name + e.last + "年は、" + e.lastDay + "までです。同じ" + year + "年の続きは、次の元号です。");
+    return {ok: true, year: year, notes: notes, error: null, label: e.name + yearLabel(n)};
+  }
+
+  // 今日の和暦（端末の日付）
+  function todayText(now){
+    now = now || new Date();
+    var y = now.getFullYear(), m = now.getMonth() + 1, d = now.getDate();
+    var r = fromDate(y, m, d);
+    var w = r.ok ? r.results[0].label : "";
+    return y + "年" + m + "月" + d + "日 = " + w + m + "月" + d + "日";
+  }
+
+  // ---- 画面 ----
+  var $ = function(id){ return document.getElementById(id); };
+
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if(cls) n.className = cls;
+    if(text != null) n.textContent = text;
+    return n;
+  }
+  function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+
+  function showSeireki(r){
+    var box = $("r-seireki");
+    clear(box);
+    if(!r.ok){ box.appendChild(el("p", "err", r.error)); return; }
+    var ans = el("div", "ans");
+    r.results.forEach(function(x){
+      ans.appendChild(el("b", null, x.label + (x.approx ? "（目安）" : "")));
+    });
+    box.appendChild(ans);
+    r.notes.forEach(function(t){ box.appendChild(el("p", "note", t)); });
+  }
+  function showWareki(r){
+    var box = $("r-wareki");
+    clear(box);
+    if(!r.ok){ box.appendChild(el("p", "err", r.error)); return; }
+    var ans = el("div", "ans");
+    ans.appendChild(el("b", null, "西暦" + r.year + "年"));
+    ans.appendChild(el("span", null, r.label + " = " + r.year + "年"));
+    box.appendChild(ans);
+    r.notes.forEach(function(t){ box.appendChild(el("p", "note", t)); });
+  }
+
+  $("f-seireki").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    showSeireki(fromSeireki($("s-y").value, $("s-m").value, $("s-d").value));
+  });
+  $("f-wareki").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    showWareki(toSeireki($("w-era").value, $("w-y").value));
+  });
+  $("today").textContent = "今日の和暦（この端末の日付）: " + todayText();
+
+  // 動作確認用: ブラウザのコンソールで wareki.selfTest() を実行
+  function selfTest(){
+    var fails = [];
+    var total = 0;
+    function eq(name, actual, expected){
+      total++;
+      if(actual !== expected) fails.push({name: name, expected: expected, actual: actual});
+    }
+    function d2(y, m, dd){ var r = fromDate(y, m, dd); return r.ok ? r.results.map(function(x){ return x.label; }).join("/") : "ERR"; }
+    function w2(era, y){ var r = toSeireki(era, y); return r.ok ? r.year : "ERR"; }
+    function y2(y){ var r = fromSeireki(String(y), "", ""); return r.ok ? r.results.map(function(x){ return x.label; }).join("/") : "ERR"; }
+
+    // 改元の前後（日付）
+    eq("1912-07-29", d2(1912, 7, 29), "明治45年");
+    eq("1912-07-30", d2(1912, 7, 30), "大正元年");
+    eq("1926-12-24", d2(1926, 12, 24), "大正15年");
+    eq("1926-12-25", d2(1926, 12, 25), "昭和元年");
+    eq("1989-01-07", d2(1989, 1, 7), "昭和64年");
+    eq("1989-01-08", d2(1989, 1, 8), "平成元年");
+    eq("2019-04-30", d2(2019, 4, 30), "平成31年");
+    eq("2019-05-01", d2(2019, 5, 1), "令和元年");
+    // 明治の新暦導入日
+    eq("1873-01-01", d2(1873, 1, 1), "明治6年");
+    eq("1872-12-31", d2(1872, 12, 31), "明治5年");
+    eq("1868-06-01 approx", fromDate(1868, 6, 1).results[0].approx, true);
+    eq("1873-01-01 not approx", fromDate(1873, 1, 1).results[0].approx, false);
+    // 和暦 → 西暦
+    eq("令和8年", w2("令和", "8"), 2026);
+    eq("昭和64年", w2("昭和", "64"), 1989);
+    eq("平成元年", w2("平成", "元"), 1989);
+    eq("平成1年", w2("平成", "1"), 1989);
+    eq("全角 令和８年", w2("令和", "８"), 2026);
+    eq("明治元年", w2("明治", "元"), 1868);
+    eq("明治45年", w2("明治", "45"), 1912);
+    eq("大正元年", w2("大正", "元"), 1912);
+    eq("大正15年", w2("大正", "15"), 1926);
+    eq("昭和元年", w2("昭和", "元"), 1926);
+    eq("平成31年", w2("平成", "31"), 2019);
+    eq("令和元年", w2("令和", "元"), 2019);
+    // 年だけ（改元の年は両方）
+    eq("1912年", y2(1912), "明治45年/大正元年");
+    eq("1926年", y2(1926), "大正15年/昭和元年");
+    eq("1989年", y2(1989), "昭和64年/平成元年");
+    eq("2019年", y2(2019), "平成31年/令和元年");
+    eq("2026年", y2(2026), "令和8年");
+    eq("1873年", y2(1873), "明治6年");
+    eq("1868年", y2(1868), "明治元年");
+    eq("1868年 approx", fromSeireki("1868", "", "").results[0].approx, true);
+    eq("1873年 not approx", fromSeireki("1873", "", "").results[0].approx, false);
+    // 年月日つき入力の経路
+    eq("日付入力 1989/1/7", fromSeireki("1989", "1", "7").results[0].label, "昭和64年");
+    eq("日付入力 全角", fromSeireki("２０１９", "５", "１").results[0].label, "令和元年");
+    // エラー
+    eq("1867年", y2(1867), "ERR");
+    eq("0年", y2(0), "ERR");
+    eq("空", y2(""), "ERR");
+    eq("英字", y2("abc"), "ERR");
+    eq("小数", y2("2000.5"), "ERR");
+    eq("負", y2("-5"), "ERR");
+    eq("2月30日", fromSeireki("2000", "2", "30").ok, false);
+    eq("2023-02-29", fromSeireki("2023", "2", "29").ok, false);
+    eq("2024-02-29", fromSeireki("2024", "2", "29").ok, true);
+    eq("1900-02-29", fromSeireki("1900", "2", "29").ok, false);
+    eq("2000-02-29", fromSeireki("2000", "2", "29").ok, true);
+    eq("13月", fromSeireki("2000", "13", "1").ok, false);
+    eq("月のみ", fromSeireki("2000", "5", "").ok, false);
+    eq("1867-12-31", fromSeireki("1867", "12", "31").ok, false);
+    eq("令和0年", w2("令和", "0"), "ERR");
+    eq("明治46年", w2("明治", "46"), "ERR");
+    eq("大正16年", w2("大正", "16"), "ERR");
+    eq("昭和65年", w2("昭和", "65"), "ERR");
+    eq("平成32年", w2("平成", "32"), "ERR");
+    eq("年が空", w2("令和", ""), "ERR");
+    eq("年が文字", w2("令和", "あ"), "ERR");
+    eq("元号が不正", w2("慶応", "1"), "ERR");
+    // 往復（改元日の当日をまたぐ年は除く）
+    [1873, 1900, 1925, 1950, 1975, 1988, 2000, 2018, 2025].forEach(function(y){
+      var r = fromSeireki(String(y), "", "");
+      var back = toSeireki(r.results[0].era, String(r.results[0].year));
+      eq("往復 " + y, back.year, y);
+    });
+    // 今日
+    eq("今日の表示", /^2026年10月12日 = 令和8年10月12日$/.test(todayText(new Date(2026, 9, 12))), true);
+
+    var res = {ok: fails.length === 0, total: total, fails: fails};
+    console.log(res.ok ? "selfTest OK" : "selfTest FAILED", res);
+    return res;
+  }
+
+  window.wareki = {
+    fromSeireki: fromSeireki, fromYear: fromYear, fromDate: fromDate,
+    toSeireki: toSeireki, todayText: todayText, selfTest: selfTest,
+    normalize: normalize, parseNum: parseNum, isValidDate: isValidDate
+  };
+})();
+</script>
+</body>
+</html>
