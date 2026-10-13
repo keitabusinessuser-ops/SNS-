@@ -38,3 +38,10 @@
 - 礼節ルール: 相手がいる行為は、少数・個別・審査済み。迷ったら実行しない
 - 既存ファイルを変更する前に `_backup/日付_時刻/` にコピーする
 - Keitaの判断がないと止まる設計にしない。判断が割れたら、推奨案で仮進行し、理由と戻し方を `decisions.md` に残す
+
+## サイト公開の手順（Keitaの「公開OK」が出た後だけ）
+1. `scripts/publish-site.sh --with-tools` で点検（名前・メールの漏れ、JS構文、外部URL、ツールの自己テスト）。既定は公開しない
+2. 点検がすべてOKなら、Keitaの返事の文言を `decisions.md` と `thinking-log/` に記録してから `PUBLISH_OK=1 scripts/publish-site.sh --with-tools --push`（通常のpushのみ。強制pushはしない）
+3. 公開後、URLの表示確認はKeita（Drive要確認）。コンテナからは github.io に到達できず、私は表示を確認できない
+- 公開用リポジトリは `/home/user/hitori-site`（無ければ、空の `git init` に、`https://github.com/hitori-to-ai/hitori-to-ai.github.io` を origin に設定。作成者名は hitori-to-ai）
+- トップページ `index.html` にツールへのリンクを足す場合は、文面の変更なので、Keitaの確認を取る

@@ -1,0 +1,14 @@
+{
+  "name": "draftgate",
+  "version": "0.1.0",
+  "description": "AIの下書きに残った作業の残骸（未解決マーカー、穴埋め、定型の前置き、重複行、閉じていないコードブロック、ダミーURL）を公開前に点検するCLI。依存ゼロ・外部通信なし。",
+  "license": "MIT",
+  "author": "hitori-to-ai",
+  "type": "commonjs",
+  "bin": { "draftgate": "bin/draftgate.js" },
+  "main": "src/index.js",
+  "files": ["bin", "src", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node --test" },
+  "keywords": ["lint", "draft", "ai", "markdown", "checker", "placeholder", "todo"]
+}
