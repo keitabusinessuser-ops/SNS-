@@ -1,0 +1,1 @@
+{ "markers": ["社内ペンディング"], "patterns": [{ "name": "date", "regex": "20XX年" }] }

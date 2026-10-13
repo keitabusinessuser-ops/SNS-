@@ -14,7 +14,7 @@ const RULES = {
 };
 
 const LINE_RULES = [
-  { rule: 'unresolved-marker', re: /【[^】\n]{0,40}(?:確認|要修正|要対応|未定|仮)[^】\n]{0,40}】/g },
+  { rule: 'unresolved-marker', re: /【[^】\n]{0,120}(?:確認|要修正|要対応|未定|仮|公開しない)[^】\n]{0,120}】/g },
   { rule: 'unresolved-marker', re: /\[(?:要確認|要修正|要対応)\]/g },
   { rule: 'todo', re: /(?<![A-Za-z0-9_])(?:TODO|TBD|FIXME|XXX)(?![A-Za-z0-9_])/g },
   { rule: 'placeholder', re: /[○〇◯]{2,}|□{2,}|△{2,}|＿{3,}|_{4,}(?![A-Za-z0-9])/g },
@@ -23,7 +23,7 @@ const LINE_RULES = [
   { rule: 'placeholder', re: /\{\{[^}\n]{1,40}\}\}/g },
   { rule: 'placeholder', re: /lorem ipsum/gi },
   { rule: 'placeholder', re: /\[(?:Your|YOUR|insert|INSERT)[^\]\n]{0,30}\]/g },
-  { rule: 'dummy-url', re: /(?:https?:\/\/)?(?:[a-z0-9-]+\.)*(?:example\.(?:com|org|net)|yourdomain\.[a-z]+|your-domain\.[a-z]+)(?![a-z0-9-])/gi },
+  { rule: 'dummy-url', re: /(?<![a-z0-9.-])(?:https?:\/\/)?(?:[a-z0-9-]+\.)*(?:example\.(?:com|org|net)|yourdomain\.[a-z]+|your-domain\.[a-z]+)(?![a-z0-9-])/gi },
   { rule: 'dummy-url', re: /https?:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?[^\s)]*/g },
 ];
 
