@@ -9,6 +9,7 @@
   "main": "src/index.js",
   "files": ["bin", "src", "README.md", "LICENSE"],
   "engines": { "node": ">=18" },
-  "scripts": { "test": "node --test" },
+  "scripts": { "test": "node --test",
+    "test:offline": "node test/run-offline.js" },
   "keywords": ["lint", "draft", "ai", "markdown", "checker", "placeholder", "todo"]
 }
