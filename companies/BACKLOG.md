@@ -5,6 +5,7 @@
 
 | 優先 | タスク | 状態 | 担当 | 成果物 |
 |---|---|---|---|---|
+| P0 | 発散バッチ2（43案、確認の少ない型）の選別: `ideas/README.md` の基準に、「人の確認の少なさ」を加えて採点（基準は先に書く）→上位を、公開前確認の方式（`approval-policy-draft.md`）とあわせて設計 | 新規 | CEO＋compliance | `ideas/selection-2.md` |
 | P0 | E-A: 承認ゲート設計テンプレ（最初の公開物）。下書き→compliance→Keita確認→サイトに掲載 | 進行（下書き作成中） | media-editor＋compliance | `site/drafts/e-a-01-approval-gates.md` |
 | P0 | 法務部の蓄積: 優先1（広告・表示）済 → 優先2（個人情報）済 → 優先1〜8済み（広告・個人情報・著作権・名誉・契約・税務・営業・AI関連）→ 次は優先9（業種別、必要時）と、既存ファイルの確認度の底上げ（一次情報に到達できたとき）。**一次情報に到達できないため、すべて二次情報。ドメイン追加（Drive 08）がボトルネック** | 進行 | legal | `legal/laws/`、`legal/issues/` |
 | P0 | 計測: GitHub指標の自動保存（済）。サイト訪問の解析は、導入前の法務確認（外部送信規律・通知）とKeita作業が要る。推奨はCloudflare Web Analytics（`knowledge/analytics-plan.md`）。Keitaの未確認が多いので、依頼は後ろに回す | 進行（保存は稼働） | scout＋legal | `metrics/`、`knowledge/analytics-plan.md` |
