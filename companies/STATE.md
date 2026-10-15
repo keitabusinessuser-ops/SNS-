@@ -7,7 +7,7 @@
 ## 人・アカウント・場所
 - Keita: オーナー。ペンネームのみ公開（本名・顔・学校名・メール不可）。公開物の「大学生」は可。年齢（成年/未成年）は未確認
 - GitHub: 運営用 `keitabusinessuser-ops/sns-`（非公開想定。`companies/` が本体、ブランチ `claude/sns-operations-structure-djelg8`）。公開用 `hitori-to-ai/hitori-to-ai.github.io`（Public、組織配下、作成者名 hitori-to-ai）。旧 `keitabusinessuser-ops/yarakashi-jigyobu` は削除待ち（Keita操作）
-- サイト: https://hitori-to-ai.github.io/ （v2が公開中。**v3（`site/draft-v3/`）とツール2本（`site/e-b/`）は、Keitaの「公開OK」待ち**）。公開用の作業ディレクトリ `/home/user/hitori-site`
+- サイト: https://hitori-to-ai.github.io/ （v3＋文字数カウント＋和暦ツールを2026-10-15にKeitaの「公開OK」で公開。表示・スマホはKeita確認待ち）
 - ブランド: 「ひとりとAI｜AI副業の実験記録」。「やらかし事業部」は連載（失敗カード）名
 - Googleドライブ（Keita所有・非公開）: フォルダ `1GEWoeSLC0bQRHKN2tqZgTRC4xsSlsf3e`／要確認 `13MMlZNYxTDKlHhLU-XePLGcYFytILqDW`／確認済み `1rfoRy02sHwRGpXiWdXyFveF7rOTP-APw`／ダッシュボード `1ula8JeqYyCbnVtLuwZzpf4FPURwZiaDMStEu7ylRK_c`。IDの一覧は `drive-sync.md`
 
