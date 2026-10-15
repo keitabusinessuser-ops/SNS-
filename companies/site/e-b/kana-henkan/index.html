@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ひらがな↔カタカナ 変換｜ひとりとAI</title>
+<meta name="description" content="ひらがなとカタカナを相互に変換。長音「ー」、小書き文字（ゃ・っ など）、「ヴ」を正しく扱います。入力は端末の外に出ません。">
+<meta property="og:title" content="ひらがな↔カタカナ 変換｜ひとりとAI">
+<meta property="og:description" content="長音・小書き文字・ヴを正しく扱うかな変換。入力は端末の外に出ません。">
+<meta property="og:type" content="website">
+<style>
+:root{
+  --bg:#f6f1e7; --paper:#fffdf8; --fg:#25231f; --sub:#6a655b; --line:#e4dccb;
+  --green:#1f5c4a; --green-soft:#e1eee8; --clay:#b8492f; --clay-soft:#f6e3dc;
+  --radius:14px; --wrap:760px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#161512; --paper:#201f1b; --fg:#efece4; --sub:#aaa59a; --line:#363229;
+        --green:#8fd0b9; --green-soft:#1d2e28; --clay:#f09a80; --clay-soft:#33241f}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+  line-height:1.9;font-size:16px;-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+a{color:var(--green)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;max-width:var(--wrap);margin:0 auto}
+.logo{font-weight:800;font-size:1.1rem;letter-spacing:.02em;color:var(--fg);text-decoration:none}
+.logo span{color:var(--green)}
+header.top a.back{font-size:.9rem;color:var(--sub);text-decoration:none}
+header.top a.back:hover{color:var(--green)}
+
+.hero{padding:32px 0 8px}
+.eyebrow{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;font-size:.8rem;padding:4px 12px;border-radius:99px;margin:0 0 14px}
+h1{font-size:clamp(1.5rem,6.2vw,2.2rem);line-height:1.4;margin:0 0 10px;letter-spacing:-.01em}
+.lead{font-size:1.05rem;color:var(--sub);margin:0 0 6px}
+.meta{font-size:.82rem;color:var(--sub);margin:0}
+
+.today{margin-top:20px;background:var(--green-soft);border-radius:10px;padding:10px 14px;font-size:.95rem}
+.today b{color:var(--green)}
+
+.tool{margin-top:20px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.tool h2{font-size:1.1rem;margin:0 0 4px;line-height:1.5}
+.tool p.sub{margin:0 0 12px;font-size:.88rem;color:var(--sub);line-height:1.7}
+.fields{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-end}
+.f{display:flex;flex-direction:column;gap:2px;min-width:0}
+.f label{font-weight:700;font-size:.85rem}
+input,select{font:inherit;font-size:16px;line-height:1.5;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:8px 10px;max-width:100%}
+input:focus,select:focus{border-color:var(--green)}
+input.y{width:6.2em}
+input.md{width:4.4em}
+input.wy{width:6.2em}
+select{min-width:5.6em}
+.fields span.u{align-self:flex-end;padding-bottom:10px;font-size:.9rem;color:var(--sub)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 0}
+button{font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;border-radius:99px;padding:10px 20px;border:2px solid var(--line);background:transparent;color:var(--fg)}
+button.primary{background:var(--green);border-color:var(--green);color:var(--bg)}
+button:hover:not(:disabled){filter:brightness(1.08)}
+.hint{font-size:.85rem;color:var(--sub);margin:8px 0 0;line-height:1.7}
+
+.result{margin:14px 0 0;min-height:1.5em}
+.result .ans{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 8px}
+.result .ans b{display:block;font-size:clamp(1.3rem,6.4vw,1.8rem);line-height:1.4;color:var(--green)}
+.result .ans span{display:block;font-size:.85rem;color:var(--sub);line-height:1.7}
+.result .err{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:10px 14px;font-size:.92rem;margin:0}
+.result .note{font-size:.85rem;color:var(--sub);margin:0 0 6px;line-height:1.7}
+
+section{padding:36px 0 0}
+section>h2{font-size:1.25rem;margin:0 0 8px;line-height:1.5}
+section p{margin:0 0 12px}
+.small{font-size:.92rem;color:var(--sub)}
+
+.diff{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.diff th,.diff td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;line-height:1.6;vertical-align:top}
+.diff th{font-weight:700;background:var(--green-soft)}
+.diff td.num{font-variant-numeric:tabular-nums}
+.diff th:first-child,.diff td:first-child{white-space:nowrap}
+.diff tr:last-child td{border-bottom:0}
+
+.notice{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:12px 16px;margin:0 0 12px;font-size:.92rem}
+
+footer{margin:48px 0 0;padding:24px 0 56px;border-top:1px solid var(--line);color:var(--sub);font-size:.85rem;line-height:1.8}
+footer p{margin:0 0 6px}
+textarea{font:inherit;font-size:16px;line-height:1.6;width:100%;min-height:8em;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:10px;resize:vertical}
+textarea:focus{border-color:var(--green);outline:none}
+fieldset{border:0;padding:0;margin:0 0 12px;min-width:0}
+legend{font-weight:700;font-size:.85rem;padding:0;margin:0 0 2px}
+.opts{display:flex;flex-wrap:wrap;gap:0 18px}
+.opts label{display:flex;gap:8px;align-items:center;font-size:.95rem;min-height:40px;line-height:1.5}
+input[type=checkbox],input[type=radio]{width:22px;height:22px;padding:0;border:0;background:none;accent-color:var(--green);flex:none}
+input.dt{min-width:11em}
+.stat{font-size:.85rem;color:var(--sub);margin:6px 0 0;min-height:1.5em}
+.lbl{font-weight:700;font-size:.85rem;display:block;margin:12px 0 4px}
+.diff td.r{text-align:right;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="../../">ひとりと<span>AI</span></a>
+  <a class="back" href="../../">サイトのトップへ戻る</a>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eyebrow">小さなツール</p>
+    <h1>ひらがな↔カタカナ 変換</h1>
+    <p class="lead">ひらがなをカタカナに、カタカナをひらがなに。長音「ー」、小書き文字、「ヴ」も、決まりどおりに扱います。</p>
+    <p class="meta">最終更新: <time datetime="2026-10-15">2026-10-15</time></p>
+  </div>
+
+  <form class="tool" id="f" novalidate>
+    <h2>変換する</h2>
+    <p class="sub">入力すると、そのまま下に結果が出ます。</p>
+    <fieldset>
+      <legend>向き</legend>
+      <div class="opts">
+        <label><input type="radio" name="dir" id="dir-kata" value="toKata" checked>ひらがな → カタカナ</label>
+        <label><input type="radio" name="dir" id="dir-hira" value="toHira">カタカナ → ひらがな</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>「ヴ」の変換先（カタカナ → ひらがな）</legend>
+      <div class="opts">
+        <label><input type="radio" name="vu" id="vu-1" value="gu" checked>「ゔ」（1文字）</label>
+        <label><input type="radio" name="vu" id="vu-2" value="u2">「う゛」（2文字）</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>ほかの設定</legend>
+      <div class="opts">
+        <label><input type="checkbox" id="o-keep" checked>「ヵ」「ヶ」はひらがなにしない（「3ヶ月」などを守る）</label>
+      </div>
+    </fieldset>
+    <label class="lbl" for="in">変換前</label>
+    <textarea id="in" autocomplete="off" spellcheck="false" placeholder="ここに入力・貼り付け"></textarea>
+    <label class="lbl" for="out">変換後</label>
+    <textarea id="out" readonly></textarea>
+    <p class="stat" id="stat" aria-live="polite"></p>
+    <div class="row">
+      <button type="button" class="primary" id="copy">結果をコピー</button>
+      <button type="button" id="clear">クリア</button>
+    </div>
+    <p class="hint" id="copymsg" aria-live="polite"></p>
+  </form>
+
+  <p class="hint">入力した内容は、この端末のブラウザの中だけで変換します。送信も保存もしません。</p>
+
+  <section id="rules">
+    <h2>変換のきまり</h2>
+    <ul class="small">
+      <li>ひらがなの「ぁ」から「ゖ」までと、カタカナの「ァ」から「ヶ」までは、ちょうど対応しています。小書き文字（ぁぃぅぇぉ・っ・ゃゅょ・ゎ）も、そのまま対応します。</li>
+      <li>長音「ー」は、ひらがなでもカタカナでも同じ文字なので、どちらの向きでも変えません。「らーめん」は「ラーメン」、「コーヒー」は「こーひー」です。</li>
+      <li>「ヴ」は、ひらがな側では「ゔ」にします。「う゛」（「う」と濁点の2文字）を選ぶこともできます。ひらがなからカタカナへは、「ゔ」も「う゛」も「ヴ」にします。</li>
+      <li>「ヵ」「ヶ」は、既定ではひらがなにしません。「3ヶ月」の「ヶ」は文字としては記号に近い使い方で、「ゖ」にすると別の字になるためです。変えたいときは、チェックを外してください。</li>
+      <li>繰り返し記号は「ゝ↔ヽ」「ゞ↔ヾ」で対応させます。</li>
+      <li>「ヷ ヸ ヹ ヺ」、半角カナ、「ㇰ」などのアイヌ語用の小書きカタカナ、漢字、英数字、記号、改行は、変えません。半角カナは、同じサイトの「全角↔半角 変換」で全角にしてから使ってください。</li>
+    </ul>
+  </section>
+
+  <section id="notes">
+    <h2>使う前に</h2>
+    <p class="notice">変換結果は、貼り付ける前に目で確かめてください。漢字の読みを、ひらがなやカタカナにするツールではありません（漢字は変えません）。人名・住所などを提出するときは、提出先の書き方の指定に従ってください。</p>
+    <p>間違いを見つけたら、公開の<a href="https://github.com/hitori-to-ai/hitori-to-ai.github.io/issues" rel="noopener">GitHubのIssue</a>に書いてください。氏名、メール、住所、電話番号、勤務先、生年月日は書かないでください。メールやフォームの窓口は作っていません。Issueを書くにはGitHubのアカウントが要り、そのユーザー名は公開されます。</p>
+  </section>
+
+  <footer>
+    <p><a href="../../">ひとりとAI（サイトのトップ）へ戻る</a></p>
+    <p>最終更新: 2026-10-15</p>
+    <p>このページはAI（Claude）が作り、運営者が確認して公開しています。ひらがなとカタカナの対応は、Unicodeの文字の並びから私が決めたもので、規格書や各システムの取り扱いとの突き合わせはしていません（未確認）。広告や計測のスクリプトは入れていません。ページの配信はGitHub Pagesで、配信側のログは、こちらでは見られません。</p>
+    <p>動作確認: 2026-10-15、Chromium系ブラウザで、自己テスト47項目が通りました。ほかのブラウザは確認していません。</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // ひらがな U+3041〜3096 ↔ カタカナ U+30A1〜30F6（差は 0x60）
+  var OFFSET = 0x60;
+  var DAKU_F = "゛", DAKU_C = "゙"; // ゛ と結合用濁点
+
+  // opts: {vu: "gu" | "u2", keepKaChi: true | false}
+  function toKata(text){
+    text = String(text == null ? "" : text);
+    var out = "", changed = 0, n = text.length, k = 0;
+    while(k < n){
+      var c = text.charCodeAt(k), ch = text.charAt(k);
+      // 「う゛」（う + ゛ / 結合濁点）→ ヴ
+      if(c === 0x3046 && k + 1 < n && (text.charAt(k + 1) === DAKU_F || text.charAt(k + 1) === DAKU_C)){
+        out += "ヴ"; changed++; k += 2; continue;
+      }
+      if((c >= 0x3041 && c <= 0x3096) || c === 0x309D || c === 0x309E){
+        out += String.fromCharCode(c + OFFSET); changed++;
+      } else out += ch;
+      k++;
+    }
+    return {text: out, changed: changed};
+  }
+
+  function toHira(text, opts){
+    opts = opts || {};
+    var vu = opts.vu === "u2" ? "u2" : "gu";
+    var keep = opts.keepKaChi !== false;
+    text = String(text == null ? "" : text);
+    var out = "", changed = 0;
+    for(var k = 0; k < text.length; k++){
+      var c = text.charCodeAt(k), ch = text.charAt(k);
+      if(c === 0x30F4){
+        out += vu === "u2" ? "う" + DAKU_F : "ゔ"; changed++;
+      } else if(c === 0x30F5 || c === 0x30F6){
+        if(keep) out += ch; else { out += String.fromCharCode(c - OFFSET); changed++; }
+      } else if((c >= 0x30A1 && c <= 0x30F3) || (c >= 0x30FD && c <= 0x30FE)){
+        out += String.fromCharCode(c - OFFSET); changed++;
+      } else out += ch;
+    }
+    return {text: out, changed: changed};
+  }
+
+  // ---- 画面 ----
+  var $ = function(id){ return document.getElementById(id); };
+  function refresh(){
+    var v = $("in").value;
+    var r = $("dir-hira").checked
+      ? toHira(v, {vu: $("vu-2").checked ? "u2" : "gu", keepKaChi: $("o-keep").checked})
+      : toKata(v);
+    $("out").value = r.text;
+    $("copymsg").textContent = "";
+    $("stat").textContent = v === "" ? "" : r.changed + "か所を変換しました。（変換前 " + v.length + "文字 → 変換後 " + r.text.length + "文字）";
+  }
+  ["in", "dir-kata", "dir-hira", "vu-1", "vu-2", "o-keep"].forEach(function(id){
+    $(id).addEventListener("input", refresh);
+    $(id).addEventListener("change", refresh);
+  });
+  $("f").addEventListener("submit", function(ev){ ev.preventDefault(); refresh(); });
+  $("clear").addEventListener("click", function(){ $("in").value = ""; refresh(); $("in").focus(); });
+  $("copy").addEventListener("click", function(){
+    var t = $("out").value, msg = $("copymsg");
+    if(t === ""){ msg.textContent = "コピーするものがありません。"; return; }
+    function fallback(){
+      try {
+        $("out").focus(); $("out").select();
+        msg.textContent = document.execCommand("copy") ? "コピーしました。" : "コピーできませんでした。結果を長押しして選んでください。";
+      } catch(e){ msg.textContent = "コピーできませんでした。結果を長押しして選んでください。"; }
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(function(){ msg.textContent = "コピーしました。"; }, fallback);
+    } else fallback();
+  });
+
+  // 動作確認用: ブラウザのコンソールで kanaHenkan.selfTest() を実行
+  function selfTest(){
+    var fails = [], total = 0, i;
+    function eq(name, actual, expected){
+      total++;
+      if(actual !== expected) fails.push({name: name, expected: expected, actual: actual});
+    }
+    function K(t){ return toKata(t).text; }
+    function H(t, o){ return toHira(t, o).text; }
+
+    eq("基本 ひら→カタ", K("ひらがな"), "ヒラガナ");
+    eq("基本 カタ→ひら", H("カタカナ"), "かたかな");
+    eq("小書き ひら→カタ", K("ぁぃぅぇぉっゃゅょゎ"), "ァィゥェォッャュョヮ");
+    eq("小書き カタ→ひら", H("ァィゥェォッャュョヮ"), "ぁぃぅぇぉっゃゅょゎ");
+    eq("拗音・促音 きゃっと", K("きゃっと"), "キャット");
+    eq("長音は不変 らーめん", K("らーめん"), "ラーメン");
+    eq("長音は不変 コーヒー", H("コーヒー"), "こーひー");
+    eq("ー自体は両向きで同じ", K("ー") + H("ー"), "ーー");
+    eq("ヴ→ゔ", H("ヴ"), "ゔ");
+    eq("ヴァイオリン→ゔぁいおりん", H("ヴァイオリン"), "ゔぁいおりん");
+    eq("ヴ→う゛ (2文字)", H("ヴ", {vu: "u2"}), "う゛");
+    eq("ゔ→ヴ", K("ゔ"), "ヴ");
+    eq("う゛→ヴ", K("う゛"), "ヴ");
+    eq("う+結合濁点→ヴ", K("ゔ"), "ヴ");
+    eq("うだけ(濁点なし)", K("うえ"), "ウエ");
+    eq("う゛ の往復", K(H("ヴァ", {vu: "u2"})), "ヴァ");
+    eq("ゔ の往復", K(H("ヴ")), "ヴ");
+    eq("濁音・半濁音", K("がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ"), "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ");
+    eq("ヶ月は既定で守る", H("3ヶ月"), "3ヶ月");
+    eq("ヵ ヶ は既定で守る", H("ヵヶ"), "ヵヶ");
+    eq("ヵ ヶ を変える設定", H("ヵヶ", {keepKaChi: false}), "ゕゖ");
+    eq("ゕゖ→ヵヶ", K("ゕゖ"), "ヵヶ");
+    eq("繰り返し ゝゞ→ヽヾ", K("ゝゞ"), "ヽヾ");
+    eq("繰り返し ヽヾ→ゝゞ", H("ヽヾ"), "ゝゞ");
+    eq("漢字・英数・記号は不変", K("漢字ABC123!？"), "漢字ABC123!？");
+    eq("カタカナ側も漢字等は不変", H("漢字ABC123!？"), "漢字ABC123!？");
+    eq("改行・タブ・空白", K("あ\nい\tう え　お"), "ア\nイ\tウ エ　オ");
+    eq("半角カナは不変", H("ｶﾀｶﾅ"), "ｶﾀｶﾅ");
+    eq("ヷヸヹヺは不変", H("ヷヸヹヺ"), "ヷヸヹヺ");
+    eq("絵文字は不変", K("あ😀い"), "ア😀イ");
+    eq("空文字", K("") + H(""), "");
+    // 境界の文字
+    eq("境界 U+3040 は不変", K("぀"), "぀");
+    eq("境界 ぁ(3041)→ァ", K("ぁ"), "ァ");
+    eq("境界 ゖ(3096)→ヶ", K("ゖ"), "ヶ");
+    eq("境界 U+3097 は不変", K("゗"), "゗");
+    eq("境界 U+30A0 は不変", H("゠"), "゠");
+    eq("境界 ァ(30A1)→ぁ", H("ァ"), "ぁ");
+    eq("境界 ン(30F3)→ん", H("ン"), "ん");
+    eq("境界 ヴ(30F4)", H("ヴ"), "ゔ");
+    eq("境界 ヷ(30F7) は不変", H("ヷ"), "ヷ");
+    eq("境界 ゛(309B) は不変", K("゛") + H("゛"), "゛゛");
+    // 往復: ゔ・ゕ・ゖ を含む 3041〜3096 全体
+    var allH = "", allK = "";
+    for(i = 0x3041; i <= 0x3096; i++) allH += String.fromCharCode(i);
+    for(i = 0x30A1; i <= 0x30F6; i++) allK += String.fromCharCode(i);
+    eq("全体 ひら→カタ は対応表どおり", K(allH), allK);
+    eq("往復 ひらがな全体", H(K(allH), {keepKaChi: false}), allH);
+    eq("往復 カタカナ全体 (ヵヶ変換あり)", K(H(allK, {keepKaChi: false})), allK);
+    eq("カタカナ全体 ヵヶ守り: 差は2か所", (function(){
+      var a = H(allK), n = 0, j;
+      for(j = 0; j < a.length; j++) if(a.charAt(j) === allK.charAt(j)) n++;
+      return n;
+    })(), 2);
+    eq("変換数 ヴ", toHira("ヴァ").changed, 2);
+    eq("変換数 う゛は1か所", toKata("う゛ぁ").changed, 2);
+
+    var res = {ok: fails.length === 0, total: total, fails: fails};
+    console.log(res.ok ? "selfTest OK" : "selfTest FAILED", res);
+    return res;
+  }
+
+  window.kanaHenkan = {toKata: toKata, toHira: toHira, selfTest: selfTest};
+  refresh();
+})();
+</script>
+</body>
+</html>

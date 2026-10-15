@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>日数計算（日付から日付まで）｜ひとりとAI</title>
+<meta name="description" content="2つの日付の間の日数を数えます。初日を含む・含まないを切り替えられ、土日を除いた平日数も出します。祝日は含めていません。入力は端末の外に出ません。">
+<meta property="og:title" content="日数計算（日付から日付まで）｜ひとりとAI">
+<meta property="og:description" content="初日を含む／含まないの切替と、土日を除く平日数。祝日は含めていません。入力は端末の外に出ません。">
+<meta property="og:type" content="website">
+<style>
+:root{
+  --bg:#f6f1e7; --paper:#fffdf8; --fg:#25231f; --sub:#6a655b; --line:#e4dccb;
+  --green:#1f5c4a; --green-soft:#e1eee8; --clay:#b8492f; --clay-soft:#f6e3dc;
+  --radius:14px; --wrap:760px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#161512; --paper:#201f1b; --fg:#efece4; --sub:#aaa59a; --line:#363229;
+        --green:#8fd0b9; --green-soft:#1d2e28; --clay:#f09a80; --clay-soft:#33241f}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+  line-height:1.9;font-size:16px;-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+a{color:var(--green)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;max-width:var(--wrap);margin:0 auto}
+.logo{font-weight:800;font-size:1.1rem;letter-spacing:.02em;color:var(--fg);text-decoration:none}
+.logo span{color:var(--green)}
+header.top a.back{font-size:.9rem;color:var(--sub);text-decoration:none}
+header.top a.back:hover{color:var(--green)}
+
+.hero{padding:32px 0 8px}
+.eyebrow{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;font-size:.8rem;padding:4px 12px;border-radius:99px;margin:0 0 14px}
+h1{font-size:clamp(1.5rem,6.2vw,2.2rem);line-height:1.4;margin:0 0 10px;letter-spacing:-.01em}
+.lead{font-size:1.05rem;color:var(--sub);margin:0 0 6px}
+.meta{font-size:.82rem;color:var(--sub);margin:0}
+
+.today{margin-top:20px;background:var(--green-soft);border-radius:10px;padding:10px 14px;font-size:.95rem}
+.today b{color:var(--green)}
+
+.tool{margin-top:20px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.tool h2{font-size:1.1rem;margin:0 0 4px;line-height:1.5}
+.tool p.sub{margin:0 0 12px;font-size:.88rem;color:var(--sub);line-height:1.7}
+.fields{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-end}
+.f{display:flex;flex-direction:column;gap:2px;min-width:0}
+.f label{font-weight:700;font-size:.85rem}
+input,select{font:inherit;font-size:16px;line-height:1.5;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:8px 10px;max-width:100%}
+input:focus,select:focus{border-color:var(--green)}
+input.y{width:6.2em}
+input.md{width:4.4em}
+input.wy{width:6.2em}
+select{min-width:5.6em}
+.fields span.u{align-self:flex-end;padding-bottom:10px;font-size:.9rem;color:var(--sub)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 0}
+button{font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;border-radius:99px;padding:10px 20px;border:2px solid var(--line);background:transparent;color:var(--fg)}
+button.primary{background:var(--green);border-color:var(--green);color:var(--bg)}
+button:hover:not(:disabled){filter:brightness(1.08)}
+.hint{font-size:.85rem;color:var(--sub);margin:8px 0 0;line-height:1.7}
+
+.result{margin:14px 0 0;min-height:1.5em}
+.result .ans{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 8px}
+.result .ans b{display:block;font-size:clamp(1.3rem,6.4vw,1.8rem);line-height:1.4;color:var(--green)}
+.result .ans span{display:block;font-size:.85rem;color:var(--sub);line-height:1.7}
+.result .err{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:10px 14px;font-size:.92rem;margin:0}
+.result .note{font-size:.85rem;color:var(--sub);margin:0 0 6px;line-height:1.7}
+
+section{padding:36px 0 0}
+section>h2{font-size:1.25rem;margin:0 0 8px;line-height:1.5}
+section p{margin:0 0 12px}
+.small{font-size:.92rem;color:var(--sub)}
+
+.diff{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.diff th,.diff td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;line-height:1.6;vertical-align:top}
+.diff th{font-weight:700;background:var(--green-soft)}
+.diff td.num{font-variant-numeric:tabular-nums}
+.diff th:first-child,.diff td:first-child{white-space:nowrap}
+.diff tr:last-child td{border-bottom:0}
+
+.notice{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:12px 16px;margin:0 0 12px;font-size:.92rem}
+
+footer{margin:48px 0 0;padding:24px 0 56px;border-top:1px solid var(--line);color:var(--sub);font-size:.85rem;line-height:1.8}
+footer p{margin:0 0 6px}
+textarea{font:inherit;font-size:16px;line-height:1.6;width:100%;min-height:8em;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:10px;resize:vertical}
+textarea:focus{border-color:var(--green);outline:none}
+fieldset{border:0;padding:0;margin:0 0 12px;min-width:0}
+legend{font-weight:700;font-size:.85rem;padding:0;margin:0 0 2px}
+.opts{display:flex;flex-wrap:wrap;gap:0 18px}
+.opts label{display:flex;gap:8px;align-items:center;font-size:.95rem;min-height:40px;line-height:1.5}
+input[type=checkbox],input[type=radio]{width:22px;height:22px;padding:0;border:0;background:none;accent-color:var(--green);flex:none}
+input.dt{min-width:11em}
+.stat{font-size:.85rem;color:var(--sub);margin:6px 0 0;min-height:1.5em}
+.lbl{font-weight:700;font-size:.85rem;display:block;margin:12px 0 4px}
+.diff td.r{text-align:left;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="../../">ひとりと<span>AI</span></a>
+  <a class="back" href="../../">サイトのトップへ戻る</a>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eyebrow">小さなツール</p>
+    <h1>日数計算（日付から日付まで）</h1>
+    <p class="lead">2つの日付の間が何日か、数えます。初日を含むかどうかを選べます。土日を除いた平日の数も出します。</p>
+    <p class="meta">最終更新: <time datetime="2026-10-15">2026-10-15</time></p>
+  </div>
+
+  <form class="tool" id="f" novalidate>
+    <h2>日数を数える</h2>
+    <p class="sub">年月日を入れてください（例: 2026-10-12）。日付の選択欄が使えない場合は、数字で入れられます。</p>
+    <div class="fields">
+      <div class="f"><label for="d1">はじめの日</label><input id="d1" class="dt" type="date" min="1583-01-01" max="9999-12-31" autocomplete="off" placeholder="2026-10-12"></div>
+      <div class="f"><label for="d2">おわりの日</label><input id="d2" class="dt" type="date" min="1583-01-01" max="9999-12-31" autocomplete="off" placeholder="2026-12-31"></div>
+    </div>
+    <div class="row">
+      <button type="button" id="t1">はじめの日を今日にする</button>
+      <button type="button" id="t2">おわりの日を今日にする</button>
+    </div>
+    <fieldset style="margin-top:12px">
+      <legend>数え方</legend>
+      <div class="opts">
+        <label><input type="radio" name="inc" id="inc-no" value="no" checked>初日を含まない（差の日数）</label>
+        <label><input type="radio" name="inc" id="inc-yes" value="yes">初日を含む（両端を数える）</label>
+      </div>
+    </fieldset>
+    <div class="row"><button type="submit" class="primary">数える</button></div>
+    <div class="result" id="r" aria-live="polite"></div>
+  </form>
+
+  <p class="hint">入力した内容は、この端末のブラウザの中だけで計算します。送信も保存もしません。「今日」は、この端末の日付です。</p>
+
+  <section id="rules">
+    <h2>数え方のきまり</h2>
+    <ul class="small">
+      <li><b>初日を含まない</b>: はじめの日の翌日から、おわりの日までを数えます。2日と3日なら1日。同じ日なら0日です。</li>
+      <li><b>初日を含む</b>: はじめの日も、おわりの日も数えます。2日と3日なら2日。同じ日なら1日です。</li>
+      <li><b>平日</b>は、月曜から金曜です。土曜・日曜を除いた日数で、<b>祝日は含めていません</b>（祝日は、平日として数えています）。振替休日、年末年始、会社の休みなども扱いません。</li>
+      <li>おわりの日がはじめの日より前のときは、日付を入れ替えて数え、その旨を表示します。</li>
+      <li>対応する範囲は、1583年1月1日から9999年12月31日までです。うるう年は、4で割れる年（100で割れる年は除き、400で割れる年は含む）で計算します。</li>
+      <li>グレゴリオ暦で計算しています。日本では1872年までは旧暦だったため、1873年より前の日付は、当時の日付とは一致しません。</li>
+    </ul>
+  </section>
+
+  <section id="notes">
+    <h2>使う前に</h2>
+    <p class="notice">計算結果は目安です。契約・法律・税金・給与・納期などで日数が問題になるときは、期間の数え方に決まりがある場合があります。提出先や専門家に確認してください。祝日は含めていないので、営業日の数としてそのまま使わないでください。法律・税務の助言ではありません。</p>
+    <p>間違いを見つけたら、公開の<a href="https://github.com/hitori-to-ai/hitori-to-ai.github.io/issues" rel="noopener">GitHubのIssue</a>に書いてください。氏名、メール、住所、電話番号、勤務先、生年月日は書かないでください。メールやフォームの窓口は作っていません。Issueを書くにはGitHubのアカウントが要り、そのユーザー名は公開されます。</p>
+  </section>
+
+  <footer>
+    <p><a href="../../">ひとりとAI（サイトのトップ）へ戻る</a></p>
+    <p>最終更新: 2026-10-15</p>
+    <p>このページはAI（Claude）が作り、運営者が確認して公開しています。曜日や日数の計算式は私が書いたもので、別の暦ソフトとの突き合わせは、ページ内の自己テスト（ブラウザ標準の日付計算との照合）の範囲に限ります。祝日は扱いません。広告や計測のスクリプトは入れていません。ページの配信はGitHub Pagesで、配信側のログは、こちらでは見られません。</p>
+    <p>動作確認: 2026-10-15、Chromium系ブラウザで、自己テスト44項目が通りました。ほかのブラウザは確認していません。</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var MIN_Y = 1583, MAX_Y = 9999;
+  var DOW = ["日", "月", "火", "水", "木", "金", "土"];
+
+  function pad(n, w){ var s = String(n); while(s.length < w) s = "0" + s; return s; }
+  function isLeap(y){ return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; }
+  function daysIn(y, m){
+    if(m === 2) return isLeap(y) ? 29 : 28;
+    return (m === 4 || m === 6 || m === 9 || m === 11) ? 30 : 31;
+  }
+  // 1970-01-01 を 0 とする通し日数（グレゴリオ暦）
+  function dayNum(y, m, d){
+    y -= m <= 2 ? 1 : 0;
+    var era = Math.floor(y / 400);
+    var yoe = y - era * 400;
+    var mp = (m + 9) % 12;
+    var doy = Math.floor((153 * mp + 2) / 5) + d - 1;
+    var doe = yoe * 365 + Math.floor(yoe / 4) - Math.floor(yoe / 100) + doy;
+    return era * 146097 + doe - 719468;
+  }
+  // 0=日 … 6=土
+  function dow(n){ return (((n + 4) % 7) + 7) % 7; }
+  // 通し日数 a〜b（両端を含む）の平日（月〜金）の数
+  function weekdaysBetween(a, b){
+    if(b < a) return 0;
+    var n = b - a + 1, full = Math.floor(n / 7), r = n % 7, cnt = full * 5;
+    for(var i = 0; i < r; i++){
+      var w = dow(a + full * 7 + i);
+      if(w !== 0 && w !== 6) cnt++;
+    }
+    return cnt;
+  }
+
+  function normalize(str){
+    return String(str == null ? "" : str).replace(/[０-９]/g, function(c){
+      return String.fromCharCode(c.charCodeAt(0) - 0xFEE0);
+    }).replace(/[－ー−／]/g, function(c){ return c === "／" ? "/" : "-"; }).replace(/^[\s　]+|[\s　]+$/g, "");
+  }
+  // "YYYY-MM-DD"（/ . 区切りも可）→ {ok, y, m, d, n, w} | {ok:false, error}
+  function parseDate(text, label){
+    var s = normalize(text);
+    if(s === "") return {ok: false, error: label + "を入れてください。"};
+    var m = /^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})$/.exec(s);
+    if(!m) return {ok: false, error: label + "は「2026-10-12」の形で入れてください。"};
+    var y = parseInt(m[1], 10), mo = parseInt(m[2], 10), d = parseInt(m[3], 10);
+    if(y < MIN_Y || y > MAX_Y) return {ok: false, error: label + "は" + MIN_Y + "年から" + MAX_Y + "年の間で入れてください。"};
+    if(mo < 1 || mo > 12 || d < 1 || d > daysIn(y, mo)) return {ok: false, error: label + "の" + y + "年" + mo + "月" + d + "日は、存在しない日付です。"};
+    var n = dayNum(y, mo, d);
+    return {ok: true, y: y, m: mo, d: d, n: n, w: dow(n)};
+  }
+  function fmt(p){ return p.y + "-" + pad(p.m, 2) + "-" + pad(p.d, 2) + "（" + DOW[p.w] + "）"; }
+
+  // 返り値 {ok, a, b, swapped, exclDays, inclDays, exclWeekdays, inclWeekdays, error}
+  function analyze(t1, t2){
+    var a = parseDate(t1, "はじめの日"), b = parseDate(t2, "おわりの日");
+    if(!a.ok) return {ok: false, error: a.error};
+    if(!b.ok) return {ok: false, error: b.error};
+    var swapped = false;
+    if(b.n < a.n){ var t = a; a = b; b = t; swapped = true; }
+    return {
+      ok: true, a: a, b: b, swapped: swapped,
+      exclDays: b.n - a.n,
+      inclDays: b.n - a.n + 1,
+      exclWeekdays: weekdaysBetween(a.n + 1, b.n),
+      inclWeekdays: weekdaysBetween(a.n, b.n),
+      error: null
+    };
+  }
+
+  // ---- 画面 ----
+  var $ = function(id){ return document.getElementById(id); };
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if(cls) n.className = cls;
+    if(text != null) n.textContent = text;
+    return n;
+  }
+  function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+  function row(tr, cells){
+    cells.forEach(function(c, i){ tr.appendChild(el(i === 0 ? "td" : "td", i === 0 ? null : "r", c)); });
+    return tr;
+  }
+
+  function show(r, include){
+    var box = $("r");
+    clear(box);
+    if(!r.ok){ box.appendChild(el("p", "err", r.error)); return; }
+    var days = include ? r.inclDays : r.exclDays;
+    var wd = include ? r.inclWeekdays : r.exclWeekdays;
+    var ans = el("div", "ans");
+    ans.appendChild(el("b", null, days + "日"));
+    ans.appendChild(el("span", null, fmt(r.a) + " から " + fmt(r.b) + "（" + (include ? "初日を含む" : "初日を含まない") + "）"));
+    box.appendChild(ans);
+    var ans2 = el("div", "ans");
+    ans2.appendChild(el("b", null, "平日 " + wd + "日"));
+    ans2.appendChild(el("span", null, "土日 " + (days - wd) + "日を除いた数です。祝日は含めていません（平日として数えています）。"));
+    box.appendChild(ans2);
+    var wk = Math.floor(days / 7), rest = days % 7;
+    box.appendChild(el("p", "note", "およそ " + wk + "週間と" + rest + "日です。"));
+    if(r.swapped) box.appendChild(el("p", "note", "おわりの日がはじめの日より前だったので、日付を入れ替えて数えました。"));
+    if(r.a.y < 1873) box.appendChild(el("p", "note", "1873年より前は、当時の暦（旧暦）と日付が一致しません。グレゴリオ暦で数えています。"));
+
+    var tbl = el("table", "diff");
+    var thead = el("thead"), htr = el("tr");
+    ["数え方", "日数", "平日"].forEach(function(t){ htr.appendChild(el("th", null, t)); });
+    thead.appendChild(htr); tbl.appendChild(thead);
+    var tb = el("tbody");
+    tb.appendChild(row(el("tr"), ["初日を含まない", r.exclDays + "日", r.exclWeekdays + "日"]));
+    tb.appendChild(row(el("tr"), ["初日を含む", r.inclDays + "日", r.inclWeekdays + "日"]));
+    tbl.appendChild(tb);
+    box.appendChild(tbl);
+  }
+  function run(){
+    show(analyze($("d1").value, $("d2").value), $("inc-yes").checked);
+  }
+  function todayText(now){
+    now = now || new Date();
+    return now.getFullYear() + "-" + pad(now.getMonth() + 1, 2) + "-" + pad(now.getDate(), 2);
+  }
+
+  $("f").addEventListener("submit", function(ev){ ev.preventDefault(); run(); });
+  $("inc-no").addEventListener("change", function(){ if($("d1").value && $("d2").value) run(); });
+  $("inc-yes").addEventListener("change", function(){ if($("d1").value && $("d2").value) run(); });
+  $("t1").addEventListener("click", function(){ $("d1").value = todayText(); });
+  $("t2").addEventListener("click", function(){ $("d2").value = todayText(); });
+
+  // 動作確認用: ブラウザのコンソールで nissu.selfTest() を実行
+  function selfTest(){
+    var fails = [], total = 0;
+    function eq(name, actual, expected){
+      total++;
+      if(actual !== expected) fails.push({name: name, expected: expected, actual: actual});
+    }
+    function A(x, y){ return analyze(x, y); }
+    function pk(r){ return r.ok ? [r.exclDays, r.inclDays, r.exclWeekdays, r.inclWeekdays].join(",") : "ERR"; }
+
+    // 同じ日・隣の日
+    eq("同日 平日(2026-10-12 月)", pk(A("2026-10-12", "2026-10-12")), "0,1,0,1");
+    eq("同日 土曜(2026-10-17)", pk(A("2026-10-17", "2026-10-17")), "0,1,0,0");
+    eq("同日 日曜(2026-10-18)", pk(A("2026-10-18", "2026-10-18")), "0,1,0,0");
+    eq("翌日 月→火", pk(A("2026-10-12", "2026-10-13")), "1,2,1,2");
+    // 週
+    eq("月〜日の1週間(含まない=火〜日で平日4)", pk(A("2026-10-12", "2026-10-18")), "6,7,4,5");
+    eq("金→翌月", pk(A("2026-10-16", "2026-10-19")), "3,4,1,2");
+    eq("土→日", pk(A("2026-10-17", "2026-10-18")), "1,2,0,0");
+    eq("曜日 2026-10-15=木", A("2026-10-15", "2026-10-15").a.w, 4);
+    eq("曜日 1970-01-01=木", A("1970-01-01", "1970-01-01").a.w, 4);
+    eq("曜日 2000-01-01=土", A("2000-01-01", "2000-01-01").a.w, 6);
+    // 月・年またぎ、うるう年
+    eq("うるう年 2024-02-28→03-01", A("2024-02-28", "2024-03-01").exclDays, 2);
+    eq("平年 2023-02-28→03-01", A("2023-02-28", "2023-03-01").exclDays, 1);
+    eq("年またぎ 2023-12-31→2024-01-01", A("2023-12-31", "2024-01-01").exclDays, 1);
+    eq("うるう年 1年間(含まない)", A("2024-01-01", "2024-12-31").exclDays, 365);
+    eq("うるう年 1年間(含む)", A("2024-01-01", "2024-12-31").inclDays, 366);
+    eq("平年 1年間(含む)", A("2023-01-01", "2023-12-31").inclDays, 365);
+    eq("1年後の同日", A("2025-03-01", "2026-03-01").exclDays, 365);
+    eq("4年後の同日", A("2024-02-29", "2028-02-29").exclDays, 1461);
+    eq("400年", A("2000-01-01", "2400-01-01").exclDays, 146097);
+    // 有効・無効な日付
+    eq("2000-02-29 は有効", A("2000-02-29", "2000-02-29").ok, true);
+    eq("1900-02-29 は無効", A("1900-02-29", "1900-02-29").ok, false);
+    eq("2100-02-29 は無効", A("2100-02-29", "2100-02-29").ok, false);
+    eq("2023-02-29 は無効", A("2023-02-29", "2023-03-01").ok, false);
+    eq("4月31日は無効", A("2026-04-31", "2026-05-01").ok, false);
+    eq("13月は無効", A("2026-13-01", "2026-12-01").ok, false);
+    eq("0日は無効", A("2026-01-00", "2026-02-01").ok, false);
+    // 範囲の端
+    eq("下限 1583-01-01 は有効", A("1583-01-01", "1583-01-01").ok, true);
+    eq("下限未満 1582-12-31", A("1582-12-31", "1583-01-01").ok, false);
+    eq("上限 9999-12-31 は有効", A("9999-12-31", "9999-12-31").ok, true);
+    eq("上限超え 10000-01-01", A("10000-01-01", "9999-12-31").ok, false);
+    eq("下限〜上限の日数", A("1583-01-01", "9999-12-31").exclDays, 3074245);
+    // 入れ替え
+    var rv = A("2026-10-18", "2026-10-12");
+    eq("逆順は入れ替える(日数)", rv.exclDays, 6);
+    eq("逆順の swapped", rv.swapped, true);
+    eq("順なら swapped=false", A("2026-10-12", "2026-10-18").swapped, false);
+    // 入力の揺れ
+    eq("全角数字", A("２０２６－１０－１２", "２０２６－１０－１３").exclDays, 1);
+    eq("スラッシュ区切り", A("2026/10/12", "2026/10/13").exclDays, 1);
+    eq("1桁の月日", A("2026-1-2", "2026-1-3").exclDays, 1);
+    eq("前後の空白", A(" 2026-10-12 ", "2026-10-13　").exclDays, 1);
+    eq("空", pk(A("", "2026-10-13")), "ERR");
+    eq("文字", pk(A("abc", "2026-10-13")), "ERR");
+    eq("年が3桁", pk(A("999-01-01", "2026-10-13")), "ERR");
+    eq("日付が末尾に余分", pk(A("2026-10-12x", "2026-10-13")), "ERR");
+    // ブラウザ標準の日付計算との照合（独立実装）
+    var bad = 0, checked = 0, starts = [[1583,1,1],[1999,12,25],[2000,2,26],[2023,12,29],[2024,2,27],[2026,10,12],[2099,12,28],[9990,1,1]];
+    starts.forEach(function(s){
+      for(var k = 0; k <= 800; k += 7){
+        // 0〜800日後。7日刻みだと曜日が固定なので、k + (s の添字) でずらす
+        var kk = k + (checked % 7);
+        var dt0 = new Date(Date.UTC(2000, 0, 1)); dt0.setUTCFullYear(s[0], s[1] - 1, s[2]);
+        var dt1 = new Date(dt0.getTime() + kk * 86400000);
+        var t0 = dt0.getUTCFullYear() + "-" + (dt0.getUTCMonth() + 1) + "-" + dt0.getUTCDate();
+        var t1 = dt1.getUTCFullYear() + "-" + (dt1.getUTCMonth() + 1) + "-" + dt1.getUTCDate();
+        var r = A(t0, t1);
+        var naive = 0, naiveEx = 0;
+        for(var q = 0; q <= kk; q++){
+          var wd = new Date(dt0.getTime() + q * 86400000).getUTCDay();
+          if(wd !== 0 && wd !== 6){ naive++; if(q > 0) naiveEx++; }
+        }
+        checked++;
+        if(!r.ok || r.exclDays !== kk || r.inclDays !== kk + 1 || r.inclWeekdays !== naive || r.exclWeekdays !== naiveEx || r.a.w !== dt0.getUTCDay() || r.b.w !== dt1.getUTCDay()) bad++;
+      }
+    });
+    eq("標準Dateとの照合 " + checked + "組の不一致数", bad, 0);
+    eq("今日の書式", /^\d{4}-\d{2}-\d{2}$/.test(todayText(new Date(2026, 0, 5))) && todayText(new Date(2026, 0, 5)) === "2026-01-05", true);
+
+    var res = {ok: fails.length === 0, total: total, fails: fails};
+    console.log(res.ok ? "selfTest OK" : "selfTest FAILED", res);
+    return res;
+  }
+
+  window.nissu = {analyze: analyze, parseDate: parseDate, weekdaysBetween: weekdaysBetween, dayNum: dayNum, selfTest: selfTest};
+})();
+</script>
+</body>
+</html>

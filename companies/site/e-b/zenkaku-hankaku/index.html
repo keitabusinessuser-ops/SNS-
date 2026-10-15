@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>全角↔半角 変換｜ひとりとAI</title>
+<meta name="description" content="全角と半角を相互に変換。英数字・記号・カナを個別に選べます。半角カナの濁点・半濁点は正しく結合します。入力は端末の外に出ません。">
+<meta property="og:title" content="全角↔半角 変換｜ひとりとAI">
+<meta property="og:description" content="英数字・記号・カナを個別に選んで変換。半角カナの濁点も正しく結合。入力は端末の外に出ません。">
+<meta property="og:type" content="website">
+<style>
+:root{
+  --bg:#f6f1e7; --paper:#fffdf8; --fg:#25231f; --sub:#6a655b; --line:#e4dccb;
+  --green:#1f5c4a; --green-soft:#e1eee8; --clay:#b8492f; --clay-soft:#f6e3dc;
+  --radius:14px; --wrap:760px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#161512; --paper:#201f1b; --fg:#efece4; --sub:#aaa59a; --line:#363229;
+        --green:#8fd0b9; --green-soft:#1d2e28; --clay:#f09a80; --clay-soft:#33241f}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+  line-height:1.9;font-size:16px;-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+a{color:var(--green)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;max-width:var(--wrap);margin:0 auto}
+.logo{font-weight:800;font-size:1.1rem;letter-spacing:.02em;color:var(--fg);text-decoration:none}
+.logo span{color:var(--green)}
+header.top a.back{font-size:.9rem;color:var(--sub);text-decoration:none}
+header.top a.back:hover{color:var(--green)}
+
+.hero{padding:32px 0 8px}
+.eyebrow{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;font-size:.8rem;padding:4px 12px;border-radius:99px;margin:0 0 14px}
+h1{font-size:clamp(1.5rem,6.2vw,2.2rem);line-height:1.4;margin:0 0 10px;letter-spacing:-.01em}
+.lead{font-size:1.05rem;color:var(--sub);margin:0 0 6px}
+.meta{font-size:.82rem;color:var(--sub);margin:0}
+
+.today{margin-top:20px;background:var(--green-soft);border-radius:10px;padding:10px 14px;font-size:.95rem}
+.today b{color:var(--green)}
+
+.tool{margin-top:20px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.tool h2{font-size:1.1rem;margin:0 0 4px;line-height:1.5}
+.tool p.sub{margin:0 0 12px;font-size:.88rem;color:var(--sub);line-height:1.7}
+.fields{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-end}
+.f{display:flex;flex-direction:column;gap:2px;min-width:0}
+.f label{font-weight:700;font-size:.85rem}
+input,select{font:inherit;font-size:16px;line-height:1.5;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:8px 10px;max-width:100%}
+input:focus,select:focus{border-color:var(--green)}
+input.y{width:6.2em}
+input.md{width:4.4em}
+input.wy{width:6.2em}
+select{min-width:5.6em}
+.fields span.u{align-self:flex-end;padding-bottom:10px;font-size:.9rem;color:var(--sub)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 0}
+button{font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;border-radius:99px;padding:10px 20px;border:2px solid var(--line);background:transparent;color:var(--fg)}
+button.primary{background:var(--green);border-color:var(--green);color:var(--bg)}
+button:hover:not(:disabled){filter:brightness(1.08)}
+.hint{font-size:.85rem;color:var(--sub);margin:8px 0 0;line-height:1.7}
+
+.result{margin:14px 0 0;min-height:1.5em}
+.result .ans{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 8px}
+.result .ans b{display:block;font-size:clamp(1.3rem,6.4vw,1.8rem);line-height:1.4;color:var(--green)}
+.result .ans span{display:block;font-size:.85rem;color:var(--sub);line-height:1.7}
+.result .err{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:10px 14px;font-size:.92rem;margin:0}
+.result .note{font-size:.85rem;color:var(--sub);margin:0 0 6px;line-height:1.7}
+
+section{padding:36px 0 0}
+section>h2{font-size:1.25rem;margin:0 0 8px;line-height:1.5}
+section p{margin:0 0 12px}
+.small{font-size:.92rem;color:var(--sub)}
+
+.diff{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.diff th,.diff td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;line-height:1.6;vertical-align:top}
+.diff th{font-weight:700;background:var(--green-soft)}
+.diff td.num{font-variant-numeric:tabular-nums}
+.diff th:first-child,.diff td:first-child{white-space:nowrap}
+.diff tr:last-child td{border-bottom:0}
+
+.notice{background:var(--clay-soft);border-left:5px solid var(--clay);border-radius:10px;padding:12px 16px;margin:0 0 12px;font-size:.92rem}
+
+footer{margin:48px 0 0;padding:24px 0 56px;border-top:1px solid var(--line);color:var(--sub);font-size:.85rem;line-height:1.8}
+footer p{margin:0 0 6px}
+textarea{font:inherit;font-size:16px;line-height:1.6;width:100%;min-height:8em;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:10px;resize:vertical}
+textarea:focus{border-color:var(--green);outline:none}
+fieldset{border:0;padding:0;margin:0 0 12px;min-width:0}
+legend{font-weight:700;font-size:.85rem;padding:0;margin:0 0 2px}
+.opts{display:flex;flex-wrap:wrap;gap:0 18px}
+.opts label{display:flex;gap:8px;align-items:center;font-size:.95rem;min-height:40px;line-height:1.5}
+input[type=checkbox],input[type=radio]{width:22px;height:22px;padding:0;border:0;background:none;accent-color:var(--green);flex:none}
+input.dt{min-width:11em}
+.stat{font-size:.85rem;color:var(--sub);margin:6px 0 0;min-height:1.5em}
+.lbl{font-weight:700;font-size:.85rem;display:block;margin:12px 0 4px}
+.diff td.r{text-align:right;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="../../">ひとりと<span>AI</span></a>
+  <a class="back" href="../../">サイトのトップへ戻る</a>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eyebrow">小さなツール</p>
+    <h1>全角↔半角 変換</h1>
+    <p class="lead">全角を半角に、半角を全角に。英数字・記号・カナを、別々に選べます。半角カナの「ｶﾞ」は「ガ」に、正しくつなぎます。</p>
+    <p class="meta">最終更新: <time datetime="2026-10-15">2026-10-15</time></p>
+  </div>
+
+  <form class="tool" id="f" novalidate>
+    <h2>変換する</h2>
+    <p class="sub">入力すると、そのまま下に結果が出ます。</p>
+    <fieldset>
+      <legend>向き</legend>
+      <div class="opts">
+        <label><input type="radio" name="dir" id="dir-half" value="toHalf" checked>全角 → 半角</label>
+        <label><input type="radio" name="dir" id="dir-full" value="toFull">半角 → 全角</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>変換するもの</legend>
+      <div class="opts">
+        <label><input type="checkbox" id="o-alnum" checked>英数字（A-Z a-z 0-9）</label>
+        <label><input type="checkbox" id="o-sym" checked>記号（スペースを含む）</label>
+        <label><input type="checkbox" id="o-kana" checked>カナ（濁点・半濁点つき）</label>
+      </div>
+    </fieldset>
+    <label class="lbl" for="in">変換前</label>
+    <textarea id="in" autocomplete="off" spellcheck="false" placeholder="ここに入力・貼り付け"></textarea>
+    <label class="lbl" for="out">変換後</label>
+    <textarea id="out" readonly></textarea>
+    <p class="stat" id="stat" aria-live="polite"></p>
+    <div class="row">
+      <button type="button" class="primary" id="copy">結果をコピー</button>
+      <button type="button" id="clear">クリア</button>
+    </div>
+    <p class="hint" id="copymsg" aria-live="polite"></p>
+  </form>
+
+  <p class="hint">入力した内容は、この端末のブラウザの中だけで変換します。送信も保存もしません。</p>
+
+  <section id="rules">
+    <h2>変換のきまり</h2>
+    <table class="diff">
+      <thead><tr><th>選ぶもの</th><th>対象</th></tr></thead>
+      <tbody>
+        <tr><td>英数字</td><td>A-Z、a-z、0-9 と、その全角（Ａ-Ｚ、ａ-ｚ、０-９）</td></tr>
+        <tr><td>記号</td><td>半角の ! から ~ までの英数字以外の記号と、その全角。半角スペース↔全角スペース（U+3000）もここに入れています</td></tr>
+        <tr><td>カナ</td><td>半角カナ（ｱ-ﾝ、ｧ-ｯ、ｰ）と全角カタカナ。半角の句読点（｡｢｣､･）と全角の「。「」、・」、濁点・半濁点の単独の文字（ﾞ ﾟ ↔ ゛ ゜）もここに入れています</td></tr>
+      </tbody>
+    </table>
+    <ul class="small">
+      <li>全角→半角で、濁点つきの「ガ」は「ｶﾞ」（2文字）になります。半角にすると文字数が増えます。</li>
+      <li>半角→全角で、「ｶﾞ」は「ガ」、「ﾊﾟ」は「パ」、「ｳﾞ」は「ヴ」にします。「ｱﾞ」のように結べない組み合わせは、「ア゛」と、濁点だけを全角にして残します。</li>
+      <li>半角の形がないもの（ヮ・ヵ・ヶ）と、ひらがなは、そのまま残します。</li>
+      <li>漢字、改行、タブ、絵文字など、上の表にないものは変えません。</li>
+      <li>半角の「\」と「~」は、全角の「＼」と「～」になります（波ダッシュ「〜」や円記号「￥」は、対象に入れていません）。</li>
+    </ul>
+  </section>
+
+  <section id="notes">
+    <h2>使う前に</h2>
+    <p class="notice">変換結果は、貼り付ける前に目で確かめてください。提出先や取り込み先のシステムで、全角・半角の決まりがある場合は、そちらの案内に従ってください。</p>
+    <p>間違いを見つけたら、公開の<a href="https://github.com/hitori-to-ai/hitori-to-ai.github.io/issues" rel="noopener">GitHubのIssue</a>に書いてください。氏名、メール、住所、電話番号、勤務先、生年月日は書かないでください。メールやフォームの窓口は作っていません。Issueを書くにはGitHubのアカウントが要り、そのユーザー名は公開されます。</p>
+  </section>
+
+  <footer>
+    <p><a href="../../">ひとりとAI（サイトのトップ）へ戻る</a></p>
+    <p>最終更新: 2026-10-15</p>
+    <p>このページはAI（Claude）が作り、運営者が確認して公開しています。対応する文字は、Unicodeの文字の並びから私が決めたもので、規格書や各システムの取り扱いとの突き合わせはしていません（未確認）。広告や計測のスクリプトは入れていません。ページの配信はGitHub Pagesで、配信側のログは、こちらでは見られません。</p>
+    <p>動作確認: 2026-10-15、Chromium系ブラウザで、自己テスト49項目が通りました。ほかのブラウザは確認していません。</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // 半角カナ U+FF66〜FF9D（56字）と、対応する全角カタカナ
+  var HALF = "", i;
+  for(i = 0xFF66; i <= 0xFF9D; i++) HALF += String.fromCharCode(i);
+  var FULL = "ヲァィゥェォャュョッーアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン";
+  // 半角の句読点類 U+FF61〜FF65 と全角
+  var PH = "", PF = "。「」、・";
+  for(i = 0xFF61; i <= 0xFF65; i++) PH += String.fromCharCode(i);
+  var DAKU = "ﾞ", HANDAKU = "ﾟ";        // ﾞ ﾟ
+  var DAKU_F = "゛", HANDAKU_F = "゜";    // ゛ ゜
+  // 濁点をつけられる文字
+  var V_BASE = "カキクケコサシスセソタチツテトハヒフヘホウワヲ";
+  var V_OUT  = "ガギグゲゴザジズゼゾダヂヅデドバビブベボヴヷヺ";
+  var H_BASE = "ハヒフヘホ";
+  var H_OUT  = "パピプペポ";
+
+  var fullToHalf = {}, halfToFull = {}, voicedToHalf = {}, semiToHalf = {}, halfVoiced = {}, halfSemi = {};
+  for(i = 0; i < HALF.length; i++){ fullToHalf[FULL.charAt(i)] = HALF.charAt(i); halfToFull[HALF.charAt(i)] = FULL.charAt(i); }
+  for(i = 0; i < PH.length; i++){ fullToHalf[PF.charAt(i)] = PH.charAt(i); halfToFull[PH.charAt(i)] = PF.charAt(i); }
+  for(i = 0; i < V_BASE.length; i++){
+    voicedToHalf[V_OUT.charAt(i)] = fullToHalf[V_BASE.charAt(i)] + DAKU;
+    halfVoiced[fullToHalf[V_BASE.charAt(i)]] = V_OUT.charAt(i);
+  }
+  for(i = 0; i < H_BASE.length; i++){
+    semiToHalf[H_OUT.charAt(i)] = fullToHalf[H_BASE.charAt(i)] + HANDAKU;
+    halfSemi[fullToHalf[H_BASE.charAt(i)]] = H_OUT.charAt(i);
+  }
+  fullToHalf[DAKU_F] = DAKU; fullToHalf[HANDAKU_F] = HANDAKU;
+
+  function isAlnumCode(c){
+    return (c >= 0x30 && c <= 0x39) || (c >= 0x41 && c <= 0x5A) || (c >= 0x61 && c <= 0x7A);
+  }
+
+  // opts: {alnum, sym, kana}。返り値 {text, changed}
+  function convert(text, dir, opts){
+    text = String(text == null ? "" : text);
+    var out = "", changed = 0, n = text.length, k = 0;
+    while(k < n){
+      var ch = text.charAt(k), c = text.charCodeAt(k), rep = null, used = 1;
+      if(dir === "toHalf"){
+        if(opts.alnum && ((c >= 0xFF10 && c <= 0xFF19) || (c >= 0xFF21 && c <= 0xFF3A) || (c >= 0xFF41 && c <= 0xFF5A))){
+          rep = String.fromCharCode(c - 0xFEE0);
+        } else if(opts.sym && c >= 0xFF01 && c <= 0xFF5E && !isAlnumCode(c - 0xFEE0)){
+          rep = String.fromCharCode(c - 0xFEE0);
+        } else if(opts.sym && c === 0x3000){
+          rep = " ";
+        } else if(opts.kana){
+          if(voicedToHalf.hasOwnProperty(ch)) rep = voicedToHalf[ch];
+          else if(semiToHalf.hasOwnProperty(ch)) rep = semiToHalf[ch];
+          else if(fullToHalf.hasOwnProperty(ch)) rep = fullToHalf[ch];
+        }
+      } else {
+        if(opts.alnum && isAlnumCode(c)){
+          rep = String.fromCharCode(c + 0xFEE0);
+        } else if(opts.sym && c >= 0x21 && c <= 0x7E && !isAlnumCode(c)){
+          rep = String.fromCharCode(c + 0xFEE0);
+        } else if(opts.sym && c === 0x20){
+          rep = "　";
+        } else if(opts.kana){
+          var nx = k + 1 < n ? text.charAt(k + 1) : "";
+          if(halfVoiced.hasOwnProperty(ch) && nx === DAKU){ rep = halfVoiced[ch]; used = 2; }
+          else if(halfSemi.hasOwnProperty(ch) && nx === HANDAKU){ rep = halfSemi[ch]; used = 2; }
+          else if(ch === DAKU) rep = DAKU_F;
+          else if(ch === HANDAKU) rep = HANDAKU_F;
+          else if(halfToFull.hasOwnProperty(ch)) rep = halfToFull[ch];
+        }
+      }
+      if(rep === null){ out += ch; } else { out += rep; changed++; }
+      k += used;
+    }
+    return {text: out, changed: changed};
+  }
+
+  // ---- 画面 ----
+  var $ = function(id){ return document.getElementById(id); };
+  function opts(){ return {alnum: $("o-alnum").checked, sym: $("o-sym").checked, kana: $("o-kana").checked}; }
+  function dir(){ return $("dir-full").checked ? "toFull" : "toHalf"; }
+  function refresh(){
+    var o = opts();
+    var r = convert($("in").value, dir(), o);
+    $("out").value = r.text;
+    $("copymsg").textContent = "";
+    if(!o.alnum && !o.sym && !o.kana) $("stat").textContent = "変換するものが選ばれていません。";
+    else if($("in").value === "") $("stat").textContent = "";
+    else $("stat").textContent = r.changed + "か所を変換しました。（変換前 " + $("in").value.length + "文字 → 変換後 " + r.text.length + "文字）";
+  }
+  ["in", "o-alnum", "o-sym", "o-kana", "dir-half", "dir-full"].forEach(function(id){
+    $(id).addEventListener("input", refresh);
+    $(id).addEventListener("change", refresh);
+  });
+  $("f").addEventListener("submit", function(ev){ ev.preventDefault(); refresh(); });
+  $("clear").addEventListener("click", function(){ $("in").value = ""; refresh(); $("in").focus(); });
+  $("copy").addEventListener("click", function(){
+    var t = $("out").value, msg = $("copymsg");
+    if(t === ""){ msg.textContent = "コピーするものがありません。"; return; }
+    function fallback(){
+      try {
+        $("out").focus(); $("out").select();
+        msg.textContent = document.execCommand("copy") ? "コピーしました。" : "コピーできませんでした。結果を長押しして選んでください。";
+      } catch(e){ msg.textContent = "コピーできませんでした。結果を長押しして選んでください。"; }
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(function(){ msg.textContent = "コピーしました。"; }, fallback);
+    } else fallback();
+  });
+
+  // 動作確認用: ブラウザのコンソールで zenkakuHankaku.selfTest() を実行
+  function selfTest(){
+    var fails = [], total = 0;
+    function eq(name, actual, expected){
+      total++;
+      if(actual !== expected) fails.push({name: name, expected: expected, actual: actual});
+    }
+    var ALL = {alnum: true, sym: true, kana: true};
+    var AN = {alnum: true, sym: false, kana: false};
+    var SY = {alnum: false, sym: true, kana: false};
+    var KA = {alnum: false, sym: false, kana: true};
+    var NONE = {alnum: false, sym: false, kana: false};
+    function h(t, o){ return convert(t, "toHalf", o || ALL).text; }
+    function f(t, o){ return convert(t, "toFull", o || ALL).text; }
+
+    eq("表の長さ 半角56=全角56", HALF.length + ":" + FULL.length, "56:56");
+    eq("英数 全→半", h("ＡＢＣ１２３ａｂｃ", AN), "ABC123abc");
+    eq("英数 半→全", f("ABC123abc", AN), "ＡＢＣ１２３ａｂｃ");
+    eq("英数のみ選択では記号とカナは残る", h("Ａ！カ", AN), "A！カ");
+    eq("記号 全→半", h("！？（）＃＼～", SY), "!?()#\\~");
+    eq("記号 半→全", f("!?()#\\~", SY), "！？（）＃＼～");
+    eq("記号のみ選択では英数は残る", h("Ａ！", SY), "Ａ!");
+    eq("全角スペース→半角", h("あ　い", SY), "あ い");
+    eq("半角スペース→全角", f("a b", SY), "a　b");
+    eq("記号オフならスペース残る", h("　", AN), "　");
+    eq("濁点 全→半", h("ガギグゲゴ", KA), "ｶﾞｷﾞｸﾞｹﾞｺﾞ");
+    eq("半濁点 全→半", h("パピプペポ", KA), "ﾊﾟﾋﾟﾌﾟﾍﾟﾎﾟ");
+    eq("ヴ・ヷ・ヺ 全→半", h("ヴヷヺ", KA), "ｳﾞﾜﾞｦﾞ");
+    eq("濁点 半→全", f("ｶﾞｷﾞｸﾞｹﾞｺﾞｻﾞﾀﾞ", KA), "ガギグゲゴザダ");
+    eq("半濁点 半→全", f("ﾊﾟﾋﾟﾌﾟﾍﾟﾎﾟ", KA), "パピプペポ");
+    eq("ｳﾞ→ヴ ﾜﾞ→ヷ ｦﾞ→ヺ", f("ｳﾞﾜﾞｦﾞ", KA), "ヴヷヺ");
+    eq("結べない組合せ ｱﾞ", f("ｱﾞ", KA), "ア゛");
+    eq("結べない組合せ ｶﾟ", f("ｶﾟ", KA), "カ゜");
+    eq("単独の濁点", f("ﾞ", KA), "゛");
+    eq("ﾊﾞﾟ は バ+゜", f("ﾊﾞﾟ", KA), "バ゜");
+    eq("濁点の連続 ｶﾞﾞ", f("ｶﾞﾞ", KA), "ガ゛");
+    eq("行末の半角カナ", f("ｶﾅｶ", KA), "カナカ");
+    eq("通常の半角カナ", f("ｶﾀｶﾅ", KA), "カタカナ");
+    eq("小書き 半→全", f("ｧｨｩｪｫｯｬｭｮ", KA), "ァィゥェォッャュョ");
+    eq("小書き 全→半", h("ァィゥェォッャュョ", KA), "ｧｨｩｪｫｯｬｭｮ");
+    eq("長音 ー↔ｰ", h("ー", KA) + f("ｰ", KA), "ｰー");
+    eq("句読点 全→半", h("。「」、・", KA), "｡｢｣､･");
+    eq("句読点 半→全", f("｡｢｣､･", KA), "。「」、・");
+    eq("半角形のない ヮヵヶ は残る", h("ヮヵヶ", KA), "ヮヵヶ");
+    eq("ひらがなは変えない", h("あいうがぱ", ALL), "あいうがぱ");
+    eq("カナオフなら半角カナ残る", f("ｶﾞ", AN), "ｶﾞ");
+    eq("全オフなら何も変えない", h("Ａ！ガ", NONE), "Ａ！ガ");
+    eq("英数+カナ 混在", h("ＡＢＣカナ", {alnum: true, sym: false, kana: true}), "ABCｶﾅ");
+    eq("境界 ！(FF01)→!", h("！", SY), "!");
+    eq("境界 ～(FF5E)→~", h("～", SY), "~");
+    eq("境界 FF00 は変えない", h("＀", ALL), "＀");
+    eq("境界 FF5F は変えない", h("｟", ALL), "｟");
+    eq("境界 ~(7E)→～", f("~", SY), "～");
+    eq("境界 DEL(7F) は変えない", f("\u007F", ALL), "\u007F");
+    eq("境界 0と9", f("09", AN), "０９");
+    eq("境界 全角０と９", h("０９", AN), "09");
+    eq("改行・タブ・漢字・絵文字は不変", h("漢字\n\t😀", ALL) + f("漢字\n\t😀".replace(/\t/, ""), {alnum: true, sym: false, kana: true}), "漢字\n\t😀漢字\n😀");
+    eq("空文字", h("", ALL) + f("", ALL), "");
+    eq("変換数の数え方 ｶﾞ は1か所", convert("ｶﾞｷ", "toFull", ALL).changed, 2);
+    // 往復: ASCII 0x20〜0x7E
+    var ascii = "";
+    for(i = 0x20; i <= 0x7E; i++) ascii += String.fromCharCode(i);
+    eq("往復 ASCII 全体", h(f(ascii, ALL), ALL), ascii);
+    eq("全角化した ASCII は全て U+3000/FF01-FF5E", /^[　！-～]+$/.test(f(ascii, ALL)), true);
+    // 往復: 半角カナ全体（U+FF61〜FF9F）
+    var hk = "";
+    for(i = 0xFF61; i <= 0xFF9F; i++) hk += String.fromCharCode(i);
+    eq("往復 半角カナ全体", h(f(hk, KA), KA), hk);
+    // 往復: 濁点・半濁点つきの全角
+    var vs = V_OUT + H_OUT;
+    eq("往復 濁音・半濁音", f(h(vs, KA), KA), vs);
+    eq("濁音を半角にすると2倍の長さ", h(vs, KA).length, vs.length * 2);
+
+    var res = {ok: fails.length === 0, total: total, fails: fails};
+    console.log(res.ok ? "selfTest OK" : "selfTest FAILED", res);
+    return res;
+  }
+
+  window.zenkakuHankaku = {convert: convert, selfTest: selfTest};
+  refresh();
+})();
+</script>
+</body>
+</html>
