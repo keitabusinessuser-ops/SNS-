@@ -1,5 +1,5 @@
 {
- "collected_at": "2026-10-19T08:40:57.660933+09:00",
+ "collected_at": "2026-10-19T20:41:10.215031+09:00",
  "repo": "hitori-to-ai/hitori-to-ai.github.io",
  "stars": 0,
  "forks": 0,
@@ -10,11 +10,6 @@
   "count": 0,
   "uniques": 0,
   "views": [
-   {
-    "timestamp": "2026-10-04T00:00:00Z",
-    "count": 0,
-    "uniques": 0
-   },
    {
     "timestamp": "2026-10-05T00:00:00Z",
     "count": 0,
@@ -79,6 +74,11 @@
     "timestamp": "2026-10-17T00:00:00Z",
     "count": 0,
     "uniques": 0
+   },
+   {
+    "timestamp": "2026-10-18T00:00:00Z",
+    "count": 0,
+    "uniques": 0
    }
   ]
  },
@@ -86,11 +86,6 @@
   "count": 24,
   "uniques": 18,
   "clones": [
-   {
-    "timestamp": "2026-10-04T00:00:00Z",
-    "count": 0,
-    "uniques": 0
-   },
    {
     "timestamp": "2026-10-05T00:00:00Z",
     "count": 0,
@@ -155,6 +150,11 @@
     "timestamp": "2026-10-17T00:00:00Z",
     "count": 3,
     "uniques": 3
+   },
+   {
+    "timestamp": "2026-10-18T00:00:00Z",
+    "count": 0,
+    "uniques": 0
    }
   ]
  },
