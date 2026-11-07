@@ -26,8 +26,10 @@ ID／タスク名／事業／種別／相手／優先度／状態／中間報告
 ## 0.7 先回り（2026-11-07 開始）
 - 登録時に「AI判定」（V列）を付ける。A=AIだけで案まで作れる／B=材料があれば作れる／C=Keitaにしかできない
 - A・Bは、作業枠の前に案を作り、Googleドライブ「秘書の下書き」（ID 1GiVIQjzA0yfYhRtVvplMqNN4JKIMYjvw）にGoogleドキュメントで置く。シートのR列とカレンダーのメモ欄「■準備済み」にURL、状態を「案あり」
-- 定期実行: 「秘書 先回り（案づくり）」毎日5:17・16:17（trig_019WTQ1qxpWrFqfturMALjs8）。結果はKeita本人宛てのメール
-- 前提情報は「事業メモ」タブ。SBOは「SBO運営データ」（ID 142ZDN6efd1tUJsiN9ZO6oIXQVgJZ4G8Wf_z394CQtfg）とplan.jsonを毎回読む。**SBO運営データには書き込まない**。メンバー名簿（個人情報）は開かない
+- 定期実行（結果はKeita本人宛てのメール）:
+  - 昼「秘書 先回り（昼・SBO以外）」毎日16:17（trig_019WTQ1qxpWrFqfturMALjs8）
+  - 夜「秘書 夜のSBO往復（0〜8時）」毎時0分（trig_01JbEhKsGvSi7bb2BoeSBENm）。SBOの作業係（KeitaのMac、毎時30分）と「予定」シートで交互にやり取り。0時に依頼、毎回返事を拾い、8時に報告
+- 前提情報は「事業メモ」タブ。SBOは「SBO運営データ」（ID 142ZDN6efd1tUJsiN9ZO6oIXQVgJZ4G8Wf_z394CQtfg）とplan.jsonを毎回読む。**SBO運営データへの書き込みは「予定」と「更新履歴」に新しい行を足すことだけ（担当＝Claude、メモに【秘書から M/D】）。既存の行は直さない**。メンバー名簿（個人情報）は開かない
 - SBOの「予定」でKeita担当・未完了のものは、取り込み候補として報告に出す（確認してから登録）
 
 ## 1. タスクが投げられたとき
