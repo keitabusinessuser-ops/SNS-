@@ -14,18 +14,19 @@
    ↓
 ⑤Keitaが実行・判断 … 終わったら「K-03 済」と一言
 ```
-朝夜の報告（`companies/reports/`）の先頭に「今日のKeitaの3件」を載せる。
+朝夜の報告（`companies/reports/`）の先頭に、期限が近いもの（シートの黄・橙・赤）を載せる。
 
 ## ファイル
 | ファイル | 中身 |
 |---|---|
-| `tasks.md` | タスク台帳（唯一の正）。`keita-todo.md` は旧台帳として残すだけ |
-| `replies.md` | 返信・連絡の管理（誰に・いつまでに・下書きの有無） |
+| **Googleスプレッドシート「Keita タスク管理」** | **タスク台帳（唯一の正）**。https://docs.google.com/spreadsheets/d/18t97VsKLDNYc6lSUOfQYNNdTHb-IAuqh0YM6j2P786I/edit （ID: 18t97VsKLDNYc6lSUOfQYNNdTHb-IAuqh0YM6j2P786I） |
+| `tasks.md` | 旧台帳（2026-11-07にシートへ移行。追記しない） |
+| `replies.md` | 旧・返信管理（シートの種別「返信・連絡」に統合済み） |
 | `settings.md` | 作業できる時間帯・見積もりの基準・ルール |
 | `/.claude/skills/secretary/SKILL.md` | 秘書の動き方（AI向け手順） |
 
 ## ルール（仕組みで回すための制約）
-1. **Keitaに出すのは1日3件まで。** 4件目以降は翌日以降に回す。全部見せると止まる（旧 keita-todo は25件超で返事が止まった）
+1. **件数で絞らない**（2026-11-07 Keita指示）。期限と工数で並べ、期限に間に合わないものは早めに投げ返す
 2. **14日動かないタスクは「捨てる候補」に自動で落とす。** Keitaは「捨てる／残す」の一言だけ
 3. **工数は「Keitaの手が要る分」だけ数える。** AIが先にやれる部分は分けて書き、先に終わらせる
 4. **返信は下書きまで。送信はKeita。** 送信・投稿・規約同意・支払いはKeita本人（CLAUDE.md の承認ゲート）

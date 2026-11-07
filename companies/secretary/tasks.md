@@ -1,3 +1,5 @@
+> **2026-11-07 に Googleスプレッドシート「Keita タスク管理」へ移行。このファイルは旧台帳として残すだけで、追記しない。** https://docs.google.com/spreadsheets/d/18t97VsKLDNYc6lSUOfQYNNdTHb-IAuqh0YM6j2P786I/edit
+
 # タスク台帳（公開禁止・唯一の正）
 
 更新: 2026-11-07。状態: 未 / 下ごしらえ済 / 予定済 / 済 / 捨てる候補。工数は「Keitaの手が要る分」。
