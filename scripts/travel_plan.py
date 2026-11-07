@@ -4,7 +4,7 @@
 
 使い方:
   python3 -I scripts/travel_plan.py 2026-11-10 "四谷,18:00,19:45" ["有楽町,20:30,22:00" ...]
-  各予定は "エリア,到着したい時刻,終了時刻"。終了が不明なら "?" （帰りは出さない）
+  各予定は "エリア,到着したい時刻,終了時刻[,駅から徒歩の分]"。終了が不明なら "?" （帰りは出さない）
 """
 import re, sys, urllib.parse
 from datetime import datetime, timedelta
@@ -57,25 +57,27 @@ def main():
     gap_home = setting("一度帰る条件", 60)  # 予定の間に、往復＋この分数より長く空けば一度帰る
     plans = []
     for arg in sys.argv[2:]:
-        area, arrive, end = [x.strip() for x in arg.split(",")]
+        f = [x.strip() for x in arg.split(",")]
+        area, arrive, end = f[:3]
+        foot = int(f[3]) if len(f) > 3 else 0
         if area not in table:
             print(f"!! 表に無いエリア: {area}（travel.md に追加するか、近いエリアで指定）")
             sys.exit(2)
         a = datetime.fromisoformat(f"{day}T{arrive}")
         e = None if end == "?" else datetime.fromisoformat(f"{day}T{end}")
-        plans.append((area, a, e))
+        plans.append((area, a, e, foot))
     plans.sort(key=lambda p: p[1])
 
-    out, here, free_at = [], HOME, None
-    for i, (area, arrive, end) in enumerate(plans):
-        mv = minutes(table, here, area)
+    out, here, free_at, prev_foot = [], HOME, None, 0
+    for i, (area, arrive, end, foot) in enumerate(plans):
+        mv = minutes(table, here, area) + foot + prev_foot
         if here == HOME:
             mv += walk
         depart = arrive - timedelta(minutes=mv + buf)
         if free_at and here != HOME:
             # 前の予定から直行するか、一度帰るか
-            back = minutes(table, here, HOME) + walk
-            go = minutes(table, HOME, area) + walk
+            back = minutes(table, here, HOME) + walk + prev_foot
+            go = minutes(table, HOME, area) + walk + foot
             if depart - free_at > timedelta(minutes=back + go + gap_home):
                 out.append(("帰宅", free_at, free_at + timedelta(minutes=back), f"{here}→柏（{back}分）"))
                 mv = go
@@ -85,14 +87,14 @@ def main():
         if end is None:
             here, free_at = area, None
             break
-        here, free_at = area, end
+        here, free_at, prev_foot = area, end, foot
     if free_at and here != HOME:
-        back = minutes(table, here, HOME) + walk
+        back = minutes(table, here, HOME) + walk + prev_foot
         out.append(("帰宅", free_at, free_at + timedelta(minutes=back), f"{here}→柏（{back}分）"))
 
     for kind, s, e, note in out:
         print(f"{kind}\t{s:%H:%M}-{e:%H:%M}\t{note}")
-    for area, _, _ in plans:
+    for area, *_ in plans:
         print(f"確認リンク({area}): {maps_link(table[area][0])}")
     print("注意: 所要時間は推定（未確認）。Googleマップで確かめ、ずれたら travel.md を直す")
 
