@@ -17,11 +17,17 @@ HOME = "柏"
 
 
 def load_table():
-    t = {}
+    """柏からの表と、都内どうしの区間表を読む。"""
+    t, pairs, section = {}, {}, ""
     for line in TABLE.read_text().splitlines():
+        if line.startswith("## "):
+            section = line
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
-        if len(cells) >= 3 and cells[2].isdigit():
+        if "区間" in section and len(cells) >= 3 and cells[2].isdigit():
+            pairs[(cells[0], cells[1])] = pairs[(cells[1], cells[0])] = int(cells[2])
+        elif "区間" not in section and len(cells) >= 3 and cells[2].isdigit():
             t[cells[0]] = (cells[1], int(cells[2]))
+    t["_pairs"] = pairs
     return t
 
 
@@ -34,6 +40,8 @@ def minutes(table, a, b):
     """エリア間の分数。柏を経由した値で近似（直接の値が無いため。上限の目安）。"""
     if a == b:
         return 0
+    if (a, b) in table["_pairs"]:
+        return table["_pairs"][(a, b)]
     ta, tb = table[a][1], table[b][1]
     if HOME in (a, b):
         return ta + tb
@@ -60,7 +68,7 @@ def main():
         f = [x.strip() for x in arg.split(",")]
         area, arrive, end = f[:3]
         foot = int(f[3]) if len(f) > 3 else 0
-        if area not in table:
+        if area not in table or area == "_pairs":
             print(f"!! 表に無いエリア: {area}（travel.md に追加するか、近いエリアで指定）")
             sys.exit(2)
         a = datetime.fromisoformat(f"{day}T{arrive}")
