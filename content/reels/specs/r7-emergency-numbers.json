@@ -1,0 +1,21 @@
+{
+  "output": "ready-to-post/02_reels/R7_10-11_emergency-numbers_video.mp4",
+  "cover": "ready-to-post/02_reels/R7_10-11_emergency-numbers_cover.png",
+  "footer": "Sources: JNTO (Japan Visitor Hotline), U.S. Embassy in Japan. Last verified 2026-10-05",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Before you land in Japan", "size": 64, "color": "muted"},
+      {"text": "Save these 3 numbers", "size": 120, "bold": true}
+    ]},
+    {"seconds": 6, "blocks": [
+      {"text": "110  Police", "size": 92, "box": "panel", "bold": true},
+      {"text": "119  Ambulance / Fire", "size": 92, "box": "panel", "bold": true},
+      {"text": "+81-50-3816-2787", "size": 76, "box": "yellow", "bold": true},
+      {"text": "Japan Visitor Hotline: 24/7, English available", "size": 56, "color": "muted"}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Screenshot this before your trip", "size": 88, "bold": true},
+      {"text": "Follow for your first 72 hours in Tokyo", "size": 56, "color": "yellow"}
+    ]}
+  ]
+}

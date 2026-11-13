@@ -1,0 +1,186 @@
+<title>First72 投稿ボード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one narrow column of reel "tickets", today's ticket first and expanded; built for a phone held in one hand. */
+:root {
+  --bg: #f3f4f7;
+  --surface: #ffffff;
+  --ink: #0e1b30;
+  --muted: #5d6b82;
+  --line: #d9dee8;
+  --brand: #0e1b30;
+  --accent: #ffcd3c;
+  --accent-ink: #0e1b30;
+  --done: #2f8f5b;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1424; --surface: #142238; --ink: #edf1f8; --muted: #9aa8bf; --line: #24344f;
+    --brand: #edf1f8; --accent: #ffcd3c; --accent-ink: #0e1b30; --done: #5cc48a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1424; --surface: #142238; --ink: #edf1f8; --muted: #9aa8bf; --line: #24344f;
+  --brand: #edf1f8; --accent: #ffcd3c; --accent-ink: #0e1b30; --done: #5cc48a; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 560px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; display: grid; gap: 20px; }
+header { display: grid; gap: 4px; }
+.brand { font-family: var(--font-mono); font-weight: 700; font-size: 13px; letter-spacing: .08em; color: var(--muted); }
+h1 { margin: 0; font-size: 26px; font-weight: 900; text-wrap: balance; }
+.steps { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--muted); }
+.steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; }
+.notice { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--muted); }
+.ticket { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: grid; }
+.ticket.today { border: 2px solid var(--accent); }
+.ticket.done { opacity: .62; }
+.tk-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; background: none; border: 0; color: inherit; font: inherit; text-align: left; width: 100%; }
+.tk-id { font-family: var(--font-mono); font-weight: 700; font-size: 15px; background: var(--brand); color: var(--bg); border-radius: 8px; padding: 2px 8px; }
+.tk-meta { display: grid; min-width: 0; flex: 1; }
+.tk-date { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tk-topic { font-weight: 700; font-size: 16px; overflow-wrap: anywhere; }
+.pill { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
+.pill.today { background: var(--accent); color: var(--accent-ink); }
+.pill.done { background: var(--done); color: #fff; }
+.pill.late { background: var(--line); color: var(--ink); }
+.tk-body { display: grid; gap: 14px; padding: 0 16px 16px; }
+.tk-body[hidden] { display: none !important; }
+.media { display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: start; }
+video { width: 120px; aspect-ratio: 9 / 16; max-width: 100%; border-radius: 10px; background: #000; }
+.actions { display: grid; gap: 10px; min-width: 0; }
+button.act { font: inherit; font-weight: 700; font-size: 15px; border-radius: 12px; padding: 12px 14px; cursor: pointer; text-align: left; border: 1px solid var(--line); background: var(--bg); color: var(--ink); display: flex; gap: 10px; align-items: center; }
+button.act.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button.act:focus-visible, .tk-head:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+button.act .n { font-family: var(--font-mono); font-size: 13px; opacity: .7; }
+.status { font-size: 13px; color: var(--muted); min-height: 1.4em; }
+textarea { width: 100%; min-height: 160px; box-sizing: border-box; font: 13px/1.5 var(--font-mono); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px; resize: vertical; }
+label.posted { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; }
+label.posted input { width: 22px; height: 22px; accent-color: var(--done); }
+@media (max-width: 380px) { .media { grid-template-columns: 1fr; } video { width: 140px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">@first72japan</div>
+    <h1>今日の投稿</h1>
+    <ol class="steps">
+      <li>① 動画を保存</li>
+      <li>② キャプションをコピー</li>
+      <li>③ Instagramで貼って投稿</li>
+    </ol>
+  </header>
+  <p class="notice" id="notice">「動画を保存」を押すとiPhoneの共有メニューが開きます。「ビデオを保存」を選ぶと写真に入り、「Instagram」を選ぶとそのまま投稿画面に進めます。</p>
+  <main id="list" class="wrap" style="padding:0"></main>
+</div>
+
+<script>
+const REELS = [{"id": "R1", "date": "2026-10-05", "topic": "免税制度の変更（11/1〜）", "video": "reels/R1_10-05_tax-free_video.mp4", "cover": "reels/R1_10-05_tax-free_cover.png", "caption": "Japan's tax-free shopping changes on Nov 1, 2026 🇯🇵\n\nHere's the new rule:\n1. Pay the full price, tax included\n2. Keep your goods + passport together\n3. At the airport, go to the tax-free kiosk BEFORE you check in your bags\n\nDo it within 90 days of purchase. No customs check = no refund.\n\nSave this so you don't lose your refund ✈️\n\nSource: National Tax Agency of Japan. Last verified 2026-10-04. General info only — always check official sites before you travel.\n\n#japantravel #tokyotravel #japantips #taxfree #japan2026"}, {"id": "R2", "date": "2026-10-06", "topic": "成田から都内への行き方", "video": "reels/R2_10-06_narita_video.mp4", "cover": "reels/R2_10-06_narita_cover.png", "caption": "Landing at Narita? Pick your train by hotel area 🚆\n\n• Skyliner → Ueno in 41 min, ¥2,470\n• Access Express → Ueno, slower but cheaper, ¥1,240\n• N'EX round trip → ¥5,200, valid 14 days, foreign passport only (best if you also fly out of Narita)\n• Bus → Tokyo Station / Ginza, ¥1,500\n\nEast hotel = Skyliner. West hotel = N'EX. Big suitcases = bus.\n\nSend this to your travel buddy ✈️\nPrices: Keisei, JR East and published fare guides. \"approx.\" = check the official site. Last verified 2026-10-05.\n\n#japantravel #tokyotravel #naritaairport #japantips #tokyo2026"}, {"id": "R3", "date": "2026-10-07", "topic": "羽田から都内への行き方", "video": "reels/R3_10-07_haneda_video.mp4", "cover": "reels/R3_10-07_haneda_cover.png", "caption": "Landing at Haneda? You're about 15 minutes from the city 🏙️\n\n• Keikyu Line → Shinagawa, 11–14 min, approx. ¥330 (IC card)\n• Tokyo Monorail → Hamamatsucho, approx. 13 min, approx. ¥519 (IC card)\n\nHeading south or west? Keikyu. Tokyo Station or Ginza? Monorail.\n\nSave this for your trip ✈️\nFares from published guides. \"approx.\" = check the official site. Last verified 2026-10-05.\n\n#japantravel #tokyotravel #hanedaairport #japantips #tokyo2026"}, {"id": "R4", "date": "2026-10-08", "topic": "Suica：アプリかカードか", "video": "reels/R4_10-08_suica_video.mp4", "cover": "reels/R4_10-08_suica_cover.png", "caption": "Suica in 2026: app or card? 💳\n\n📱 iPhone → Welcome Suica Mobile app. No deposit, balance valid 180 days, top up with Apple Pay.\n🤖 Android or want a card → buy a Suica or PASMO card at the station.\n\nYour card must be in your own name, and some countries have restrictions — test it before you fly.\n\nSave this for your trip ✈️\nSource: JR East. Last verified 2026-10-04.\n\n#japantravel #suica #tokyotravel #japantips #japan2026"}, {"id": "R5", "date": "2026-10-09", "topic": "地下鉄パスは得か", "video": "reels/R5_10-09_subway-ticket_video.mp4", "cover": "reels/R5_10-09_subway-ticket_cover.png", "caption": "Is the Tokyo Subway Ticket worth it? Quick math 🧮\n\n24h ¥1,000 / 48h ¥1,500 / 72h ¥2,000 (adult)\nThe cheapest subway ride is ¥178 with an IC card → 5+ rides a day usually pays off.\n\n⚠️ It does NOT cover JR lines (like the Yamanote Line).\n⏱️ The clock starts at your first ticket gate, not when you buy it.\n\nSave this for your trip ✈️\nSources: Tokyo Metro, Toei Transportation. Last verified 2026-10-04.\n\n#japantravel #tokyosubway #tokyotravel #japantips #tokyo2026"}, {"id": "R6", "date": "2026-10-10", "topic": "Visit Japan Web（入国のQRコード）", "video": "reels/R6_10-10_visit-japan-web_video.mp4", "cover": "reels/R6_10-10_visit-japan-web_cover.png", "caption": "Flying to Japan? Skip the paper forms 🛬\n\nVisit Japan Web is free and run by Japan's Digital Agency. You get ONE QR code for both immigration and customs.\n\nIt's optional (paper forms still exist), but registering before your flight makes arrival much faster.\n\nSave this for your trip ✈️ Follow @first72japan for your first 72 hours in Tokyo.\nSource: Digital Agency of Japan. Last verified 2026-10-05. General info only — always check official sites before you travel.\n\n#japantravel #visitjapanweb #tokyotravel #japantips #japan2026"}, {"id": "R7", "date": "2026-10-11", "topic": "保存しておく緊急連絡先3つ", "video": "reels/R7_10-11_emergency-numbers_video.mp4", "cover": "reels/R7_10-11_emergency-numbers_cover.png", "caption": "Save these 3 numbers before you land in Japan 📱\n\n🚓 110 — Police\n🚑 119 — Ambulance / Fire\n☎️ +81-50-3816-2787 — Japan Visitor Hotline (JNTO). 24/7, English available. Help with accidents, illness, disasters and general travel questions.\n\nScreenshot this before your trip.\nSources: JNTO, U.S. Embassy in Japan. Last verified 2026-10-05.\n\n#japantravel #japantips #tokyotravel #travelsafety #japan2026"}, {"id": "R8", "date": "2026-10-12", "topic": "成田から空港バスで都内へ", "video": "reels/R8_10-12_narita-bus_video.mp4", "cover": "reels/R8_10-12_narita-bus_cover.png", "caption": "Landing at Narita with big suitcases? The bus can be easier 🚌\n\nAirport Bus TYO-NRT:\n• To Tokyo Station from 65 min\n• ¥1,500 (daytime, adult)\n• Pay with cash or an IC card (like Suica)\n• Late night / early morning: ¥3,000\n\nNo transfers, no stairs with your luggage.\n\nSend this to your travel buddy ✈️\nSource: Airport Bus TYO-NRT (official). Last verified 2026-10-05.\n\n#japantravel #naritaairport #tokyotravel #japantips #tokyo2026"}, {"id": "R9", "date": "2026-10-13", "topic": "免税：荷物を預ける前に手続き", "video": "reels/R9_10-13_tax-free-reminder_video.mp4", "cover": "reels/R9_10-13_tax-free-reminder_cover.png", "caption": "Japan trip in November? Don't make this tax-free mistake ⚠️\n\nFrom Nov 1, 2026, you pay tax at the store and get it back at the airport. Customs has to see your goods first.\n\n✅ 1. Tax-free kiosk + customs check\n✅ 2. THEN check in your bags\n\nCheck your bags first and you may lose your refund. You have 90 days from purchase.\n\nSave this so you get your money back ✈️\nSource: National Tax Agency of Japan. Last verified 2026-10-05. General info only — always check official sites before you travel.\n\n#japantravel #taxfree #japanshopping #japantips #japan2026"}, {"id": "R10", "date": "2026-10-14", "topic": "Welcome Suicaの残高は180日", "video": "reels/R10_10-14_welcome-suica_video.mp4", "cover": "reels/R10_10-14_welcome-suica_cover.png", "caption": "Using Welcome Suica Mobile? Don't top up too much 💳\n\nYour balance is valid for 180 days from your first top-up. After that, it expires.\n\nTop up a little at a time with Apple Pay instead.\n\nSave this for your trip ✈️ Follow @first72japan for your first 72 hours in Tokyo.\nSource: JR East. Last verified 2026-10-05.\n\n#japantravel #suica #tokyotravel #japantips #japan2026"}];
+const STORE_KEY = "first72-posted";
+let posted = {};
+try { posted = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch (e) { posted = {}; }
+function savePosted() { try { localStorage.setItem(STORE_KEY, JSON.stringify(posted)); } catch (e) {} }
+
+function todayTokyo() {
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+  const get = t => parts.find(p => p.type === t).value;
+  return `${get("year")}-${get("month")}-${get("day")}`;
+}
+const today = todayTokyo();
+const fmtDate = d => { const [, m, day] = d.split("-"); const w = "日月火水木金土"[new Date(d + "T00:00:00+09:00").getDay()]; return `${Number(m)}/${Number(day)}（${w}） 8:00`; };
+
+let downloadsPromise = null;
+function getDownloads() {
+  if (!downloadsPromise) downloadsPromise = (window.claude && window.claude.use) ? window.claude.use("downloads") : Promise.resolve(null);
+  return downloadsPromise;
+}
+
+async function saveFile(path, filename, statusEl) {
+  statusEl.textContent = "準備しています…";
+  const downloads = await getDownloads();
+  if (!downloads) { statusEl.textContent = "この画面では保存できません。iPhoneのClaudeアプリでこのページを開いてください。"; return; }
+  try {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error("fetch");
+    const blob = await res.blob();
+    await downloads.save({ filename, data: blob });
+    statusEl.textContent = "保存メニューを開きました。";
+  } catch (err) {
+    const code = err && err.code;
+    statusEl.textContent = code === "declined" ? "保存をキャンセルしました。" :
+      code === "rate_limited" ? "保存メニューがすでに開いています。少し待ってからもう一度押してください。" :
+      "保存できませんでした。もう一度押すか、Claudeに伝えてください。";
+  }
+}
+
+async function copyCaption(text, area, statusEl) {
+  try {
+    await navigator.clipboard.writeText(text);
+    statusEl.textContent = "コピーしました。Instagramのキャプション欄に貼ってください。";
+  } catch (e) {
+    area.hidden = false; area.focus(); area.select();
+    statusEl.textContent = "自動でコピーできませんでした。下の文章を長押しして「すべてを選択」→「コピー」してください。";
+  }
+}
+
+function render() {
+  const list = document.getElementById("list");
+  list.textContent = "";
+  const firstOpen = REELS.find(r => !posted[r.id] && r.date <= today) || REELS.find(r => !posted[r.id]);
+  for (const r of REELS) {
+    const isDone = !!posted[r.id];
+    const isToday = r.date === today;
+    const card = document.createElement("section");
+    card.className = "ticket" + (isToday ? " today" : "") + (isDone ? " done" : "");
+
+    const head = document.createElement("button");
+    head.className = "tk-head"; head.type = "button";
+    const id = document.createElement("span"); id.className = "tk-id"; id.textContent = r.id;
+    const meta = document.createElement("span"); meta.className = "tk-meta";
+    const dt = document.createElement("span"); dt.className = "tk-date"; dt.textContent = fmtDate(r.date);
+    const tp = document.createElement("span"); tp.className = "tk-topic"; tp.textContent = r.topic;
+    meta.append(dt, tp);
+    const pill = document.createElement("span"); pill.className = "pill";
+    if (isDone) { pill.classList.add("done"); pill.textContent = "投稿済み"; }
+    else if (isToday) { pill.classList.add("today"); pill.textContent = "今日"; }
+    else if (r.date < today) { pill.classList.add("late"); pill.textContent = "未投稿"; }
+    head.append(id, meta);
+    if (pill.textContent) head.append(pill);
+
+    const body = document.createElement("div"); body.className = "tk-body";
+    body.hidden = !(firstOpen && firstOpen.id === r.id);
+    head.setAttribute("aria-expanded", String(!body.hidden));
+    head.addEventListener("click", () => { body.hidden = !body.hidden; head.setAttribute("aria-expanded", String(!body.hidden)); });
+
+    const media = document.createElement("div"); media.className = "media";
+    const video = document.createElement("video");
+    video.src = r.video; video.poster = r.cover; video.controls = true; video.muted = true; video.playsInline = true; video.preload = "none";
+    const actions = document.createElement("div"); actions.className = "actions";
+    const status = document.createElement("div"); status.className = "status"; status.setAttribute("aria-live", "polite");
+    const area = document.createElement("textarea"); area.readOnly = true; area.value = r.caption; area.hidden = true; area.id = "cap-" + r.id;
+
+    const b1 = document.createElement("button"); b1.type = "button"; b1.className = "act primary";
+    b1.innerHTML = '<span class="n">①</span>動画を保存'; b1.addEventListener("click", () => saveFile(r.video, `${r.id}_video.mp4`, status));
+    const b2 = document.createElement("button"); b2.type = "button"; b2.className = "act";
+    b2.innerHTML = '<span class="n">②</span>キャプションをコピー'; b2.addEventListener("click", () => copyCaption(r.caption, area, status));
+    const b3 = document.createElement("button"); b3.type = "button"; b3.className = "act";
+    b3.innerHTML = '<span class="n">＋</span>表紙の画像を保存'; b3.addEventListener("click", () => saveFile(r.cover, `${r.id}_cover.png`, status));
+    actions.append(b1, b2, b3);
+    media.append(video, actions);
+
+    const lbl = document.createElement("label"); lbl.className = "posted";
+    const cb = document.createElement("input"); cb.type = "checkbox"; cb.id = "posted-" + r.id; cb.checked = isDone;
+    cb.addEventListener("change", () => { if (cb.checked) posted[r.id] = true; else delete posted[r.id]; savePosted(); render(); });
+    lbl.append(cb, document.createTextNode("投稿した（チェックすると次のリールが開きます）"));
+
+    body.append(media, status, area, lbl);
+    card.append(head, body);
+    list.append(card);
+  }
+}
+render();
+</script>

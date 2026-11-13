@@ -1,0 +1,25 @@
+{
+  "output": "ready-to-post/02_reels/R4_10-08_suica_video.mp4",
+  "cover": "ready-to-post/02_reels/R4_10-08_suica_cover.png",
+  "footer": "Source: JR East (Welcome Suica Mobile). General info only - check official sites before you travel. Last verified 2026-10-04",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Suica in 2026:", "size": 72, "color": "muted"},
+      {"text": "App or card?", "size": 130, "bold": true}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "iPhone", "size": 60, "color": "yellow", "bold": true},
+      {"text": "Welcome Suica Mobile app: no deposit, balance valid 180 days, top up with Apple Pay", "size": 60, "box": "panel"}
+    ]},
+    {"seconds": 4, "blocks": [
+      {"text": "Android or want a card?", "size": 60, "color": "yellow", "bold": true},
+      {"text": "Buy a Suica or PASMO card at the station", "size": 66, "box": "panel"}
+    ]},
+    {"seconds": 4, "blocks": [
+      {"text": "Card in your own name. Test it before you fly.", "size": 80, "box": "red", "bold": true}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Save this for your trip", "size": 88, "bold": true}
+    ]}
+  ]
+}

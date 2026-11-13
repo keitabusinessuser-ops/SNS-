@@ -1,0 +1,27 @@
+{
+  "output": "ready-to-post/02_reels/R5_10-09_subway-ticket_video.mp4",
+  "cover": "ready-to-post/02_reels/R5_10-09_subway-ticket_cover.png",
+  "footer": "Sources: Tokyo Metro, Toei Transportation. Adult prices. Last verified 2026-10-04",
+  "slides": [
+    {"seconds": 3, "blocks": [
+      {"text": "Tokyo Subway Ticket:", "size": 72, "color": "muted"},
+      {"text": "Worth it? Quick math", "size": 116, "bold": true}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "24 hours: 1,000 yen", "size": 76, "box": "panel", "bold": true},
+      {"text": "48 hours: 1,500 yen", "size": 76, "box": "panel", "bold": true},
+      {"text": "72 hours: 2,000 yen", "size": 76, "box": "panel", "bold": true}
+    ]},
+    {"seconds": 5, "blocks": [
+      {"text": "Cheapest subway ride: 178 yen (IC card)", "size": 64, "color": "muted"},
+      {"text": "5+ rides a day = usually worth it", "size": 84, "box": "yellow", "bold": true}
+    ]},
+    {"seconds": 4, "blocks": [
+      {"text": "Does NOT cover JR lines (like the Yamanote Line)", "size": 72, "box": "red", "bold": true},
+      {"text": "The clock starts at your first ticket gate", "size": 60, "color": "muted"}
+    ]},
+    {"seconds": 3, "blocks": [
+      {"text": "Save this for your trip", "size": 88, "bold": true}
+    ]}
+  ]
+}
