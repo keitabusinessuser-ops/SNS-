@@ -53,6 +53,9 @@ Keitaは「丸投げ・全自動化・AI出力の鵜呑み」で3回失敗して
 - 決定と指摘は各社の `decisions.md` に記録する
 - Keitaへの報告は日本語で簡潔に。最後に「次の一手」を1つ出す
 
+## Keitaのタスク管理
+Keitaのタスク台帳はGoogleスプレッドシート「Keita タスク管理」（ID: `18t97VsKLDNYc6lSUOfQYNNdTHb-IAuqh0YM6j2P786I`）。タスク・予定・返信の扱いは `.claude/skills/secretary/SKILL.md`。
+
 ## 報告と稼働
 報告は朝夜の2回、成果のみ（`companies/reports/`）。Keitaの稼働は朝夜の確認のみを目標にする。
 成功・失敗・ツール・効率化は `companies/knowledge/` に蓄積し、毎週振り返って最新版に更新する。

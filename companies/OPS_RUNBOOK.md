@@ -8,13 +8,14 @@
 1.5. 指標の保存: `scripts/collect-metrics.sh` を実行（GitHubの指標を `companies/metrics/` に保存。トラフィックは14日で消える）
 1.6. 期限の確認: `python3 -I scripts/check-experiments.py` を実行（`companies/experiments.json` の失敗条件。「期限到達」は判定して decisions.md に記録）
 1.7. 読む（再開用）: `companies/STATE.md`（現在の状態のスナップショット。文脈が圧縮された後も、これで再開できる）。サイクルの最後に更新する
-2. 読む: `CLAUDE.md`、`companies/MISSION.md`、`companies/BACKLOG.md`、`companies/keita-todo.md`、直近の `companies/reports/`、各社の `decisions.md`、`companies/kpi.md`
+2. 読む: `CLAUDE.md`、`companies/MISSION.md`、`companies/BACKLOG.md`、Googleスプレッドシート「Keita タスク管理」（Keitaのタスク台帳。ID は CLAUDE.md）、直近の `companies/reports/`、各社の `decisions.md`、`companies/kpi.md`
 3. 前回から変わったこと（Keitaの指示、数字、環境の制約）を把握する
 
 ## サイクル（朝・夜共通）
 1. `BACKLOG.md` の上から、**最大3タスク**を実行する。部署（`.claude/agents/`）を使い、並列は最大3
 2. 公開物（記事、サイトのページなど）は、compliance審査（法律・漏洩・礼節）を通す。通ったものは `companies/publish-queue/` に「コピペ用」で置く（Keitaが朝夜に出す）。自前サイト用は、公開用リポジトリができるまでは同じ場所に置く
-3. 承認ゲートに該当するもの、Keita本人にしかできないものは、`companies/keita-todo.md` に積む（何を・なぜ・どう確認するか）。待たずに他のタスクへ進む
+3. 承認ゲートに該当するもの、Keita本人にしかできないものは、タスク管理シートに積む（何を・なぜ・どう確認するか・期限・工数）。待たずに他のタスクへ進む
+3.5. 秘書（`.claude/skills/secretary/SKILL.md` の4）: タスク管理シートで期限が近いもの（黄・橙・赤）を拾い、カレンダーに作業枠を入れ、報告の先頭に載せる
 4. 学びを `companies/knowledge/` に追記し、決定を各社の `decisions.md` に記録する
 5. `companies/reports/YYYY-MM-DD-am.md`（朝）または `-pm.md`（夜）を作る。成果のみ。作業の経緯は書かない
 6. `git add`、`git commit`、`git pull --rebase`、`git push`（ブランチ: `claude/sns-operations-structure-djelg8`）。競合したら、片方の変更を捨てずに統合する
